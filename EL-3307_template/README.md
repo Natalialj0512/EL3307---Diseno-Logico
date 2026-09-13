@@ -80,6 +80,208 @@ comunicación entre las FPGA del transmisor y receptor.
 
 ---
 
+## 5. Desarrollo
+
+<details>
+<summary><strong>5.1 Subsistema 1 — Transmisor</strong></summary>
+
+<details>
+<summary><strong>Módulo: Lectura y visualización de la palabra</strong></summary>
+
+#### 1. Encabezado del módulo
+
+#### 2. Parámetros
+
+#### 3. Entradas y salidas
+
+#### 4. Criterios de diseño
+
+#### 5. Testbench
+
+</details>
+
+
+<details>
+<summary><strong>Módulo: Codificación Hamming (7,4)</strong></summary>
+
+#### 1. Encabezado del módulo
+
+#### 2. Parámetros
+
+#### 3. Entradas y salidas
+
+#### 4. Criterios de diseño
+
+#### 5. Testbench
+
+</details>
+
+
+<details>
+<summary><strong>Módulo: Inserción de paridad para DED</strong></summary>
+
+#### 1. Encabezado del módulo
+
+#### 2. Parámetros
+
+#### 3. Entradas y salidas
+
+#### 4. Criterios de diseño
+
+#### 5. Testbench
+
+</details>
+
+
+<details>
+<summary><strong>Módulo: Generador de error</strong></summary>
+
+#### 1. Encabezado del módulo
+
+#### 2. Parámetros
+
+#### 3. Entradas y salidas
+
+#### 4. Criterios de diseño
+
+#### 5. Testbench
+
+</details>
+
+
+<details>
+<summary><strong>Testbench del transmisor</strong></summary>
+
+</details>
+
+</details>
+
+
+<details>
+<summary><strong>5.2 Subsistema 2 — Receptor</strong></summary>
+
+<details>
+<summary><strong>Módulo: Verificación de paridad</strong></summary>
+
+#### 1. Encabezado del módulo
+
+#### 2. Parámetros
+
+#### 3. Entradas y salidas
+
+#### 4. Criterios de diseño
+
+#### 5. Testbench
+
+</details>
+
+
+<details>
+<summary><strong>Módulo: Determinación del síndrome Hamming</strong></summary>
+
+#### 1. Encabezado del módulo
+
+#### 2. Parámetros
+
+#### 3. Entradas y salidas
+
+#### 4. Criterios de diseño
+
+#### 5. Testbench
+
+</details>
+
+
+<details>
+<summary><strong>Módulo: Corrección de error</strong></summary>
+
+#### 1. Encabezado del módulo
+
+#### 2. Parámetros
+
+#### 3. Entradas y salidas
+
+#### 4. Criterios de diseño
+
+#### 5. Testbench
+
+</details>
+
+
+<details>
+<summary><strong>Módulo: Despliegue de la palabra corregida</strong></summary>
+
+#### 1. Encabezado del módulo
+
+#### 2. Parámetros
+
+#### 3. Entradas y salidas
+
+#### 4. Criterios de diseño
+
+#### 5. Testbench
+
+</details>
+
+
+<details>
+<summary><strong>Testbench del receptor</strong></summary>
+
+</details>
+
+</details>
+
+
+<details>
+<summary><strong>5.3 Ejercicio 2 — Oscilador en anillo</strong></summary>
+
+<details>
+<summary><strong>Diseño del oscilador</strong></summary>
+
+#### 1. Encabezado
+
+#### 2. Parámetros
+
+#### 3. Conexiones
+
+#### 4. Criterios de diseño
+
+#### 5. Procedimiento
+
+#### 6. Resultados
+
+#### 7. Análisis
+
+</details>
+
+
+<details>
+<summary><strong>Mediciones</strong></summary>
+
+#### 1. Procedimiento de medición
+
+#### 2. Resultados experimentales
+
+#### 3. Cálculos
+
+</details>
+
+
+<details>
+<summary><strong>Análisis de resultados</strong></summary>
+
+</details>
+
+
+<details>
+<summary><strong>Conclusiones</strong></summary>
+
+</details>
+
+</details>
+
+---
+
 ## 3. Desarrollo
 
 ### 3.0 Descripción general del sistema
