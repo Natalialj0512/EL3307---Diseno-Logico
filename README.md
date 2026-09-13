@@ -1,2 +1,3 @@
-# EL3307---Diseno-Logico
-Curso de diseño lógico
+# DISEÑO LÓGICO - EL3307
+Proyecto 1: Diseño digital combinacional mixto
+
