@@ -42,41 +42,41 @@ La siguiente tabla presenta la asignación de pines utilizada para las entradas
 y salidas externas de la FPGA, así como las conexiones destinadas a la
 comunicación entre las FPGA del transmisor y receptor.
 
-| Señal | Pin | Tipo |
+| Señal | Pin Tang Nano 9K | Función / Descripción |
 |---|---:|---|
-| `error_pos1[0]` | 36 | Entrada |
-| `error_pos1[1]` | 37 | Entrada |
-| `error_pos1[2]` | 38 | Entrada |
-| `error_pos2[0]` | 26 | Entrada |
-| `error_pos2[1]` | 25 | Entrada |
-| `error_pos2[2]` | 39 | Entrada |
-| `datos[0]` | 30 | Entrada |
-| `datos[1]` | 29 | Entrada |
-| `datos[2]` | 28 | Entrada |
-| `datos[3]` | 27 | Entrada |
-| `C0` | 35 | Entrada |
-| `C1` | 40 | Entrada |
-| `C2` | 33 | Entrada |
-| `C3` | 34 | Entrada |
-| `modo` | 48 | Entrada |
-| `display` | 49 | Entrada |
-| `A` | 72 | Salida |
-| `B` | 71 | Salida |
-| `C` | 70 | Salida |
-| `D` | 75 | Salida |
-| `E` | 76 | Salida |
-| `F` | 74 | Salida |
-| `G` | 73 | Salida |
-| `DIG1` | 63 | Salida |
-| `DIG2` | 77 | Salida |
-| `com[0]` | 41 | Comunicación |
-| `com[1]` | 42 | Comunicación |
-| `com[2]` | 51 | Comunicación |
-| `com[3]` | 53 | Comunicación |
-| `com[4]` | 54 | Comunicación |
-| `com[5]` | 55 | Comunicación |
-| `com[6]` | 56 | Comunicación |
-| `com[7]` | 57 | Comunicación |
+| `error_pos1[0]` | 36 | Switch de datos para colocar el primer error, bit 0 de la posición |
+| `error_pos1[1]` | 37 | Switch de datos para colocar el primer error, bit 1 de la posición |
+| `error_pos1[2]` | 38 | Switch de datos para colocar el primer error, bit 2 de la posición |
+| `error_pos2[0]` | 26 | Switch de datos para colocar el segundo error, bit 0 de la posición |
+| `error_pos2[1]` | 25 | Switch de datos para colocar el segundo error, bit 1 de la posición |
+| `error_pos2[2]` | 39 | Switch de datos para colocar el segundo error, bit 2 de la posición |
+| `datos[0]` | 30 | Switch de entrada de datos, bit 0 de la palabra de 4 bits |
+| `datos[1]` | 29 | Switch de entrada de datos, bit 1 de la palabra de 4 bits |
+| `datos[2]` | 28 | Switch de entrada de datos, bit 2 de la palabra de 4 bits |
+| `datos[3]` | 27 | Switch de entrada de datos, bit 3 de la palabra de 4 bits |
+| `C0` | 35 | Salida de compuerta XOR correspondiente al bit de Hamming `C0` |
+| `C1` | 40 | Salida de compuerta XOR correspondiente al bit de Hamming `C1` |
+| `C2` | 33 | Salida de compuerta XOR correspondiente al bit de Hamming `C2` |
+| `P` | 34 | Salida de compuerta XOR correspondiente al bit de paridad global `P` |
+| `modo` | 48 | Switch de selección del modo de funcionamiento del sistema (Transmisor/Receptor) |
+| `display` | 49 | Switch de selección de la información mostrada en los displays |
+| `A` | 72 | Señal de control del segmento A del display de 7 segmentos |
+| `B` | 71 | Señal de control del segmento B del display de 7 segmentos |
+| `C` | 70 | Señal de control del segmento C del display de 7 segmentos |
+| `D` | 75 | Señal de control del segmento D del display de 7 segmentos |
+| `E` | 76 | Señal de control del segmento E del display de 7 segmentos |
+| `F` | 74 | Señal de control del segmento F del display de 7 segmentos |
+| `G` | 73 | Señal de control del segmento G del display de 7 segmentos |
+| `DIG1` | 63 | Control del ánodo común del primer dígito mediante transistor PNP |
+| `DIG2` | 77 | Control del ánodo común del segundo dígito mediante transistor PNP |
+| `com[0]` | 41 | Línea 0 de comunicación entre la FPGA transmisora y la FPGA receptora |
+| `com[1]` | 42 | Línea 1 de comunicación entre la FPGA transmisora y la FPGA receptora |
+| `com[2]` | 51 | Línea 2 de comunicación entre la FPGA transmisora y la FPGA receptora |
+| `com[3]` | 53 | Línea 3 de comunicación entre la FPGA transmisora y la FPGA receptora |
+| `com[4]` | 54 | Línea 4 de comunicación entre la FPGA transmisora y la FPGA receptora |
+| `com[5]` | 55 | Línea 5 de comunicación entre la FPGA transmisora y la FPGA receptora |
+| `com[6]` | 56 | Línea 6 de comunicación entre la FPGA transmisora y la FPGA receptora |
+| `com[7]` | 57 | Línea 7 de comunicación entre la FPGA transmisora y la FPGA receptora |
 
 ---
 
