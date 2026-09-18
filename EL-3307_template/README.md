@@ -383,11 +383,6 @@ Los resultados obtenidos permiten comprobar la respuesta del
 decodificador para todo el rango de entrada `0`--`F` antes de realizar
 la implementación física del módulo en la FPGA.
 
-> **Nota:** Esta sección corresponde a la verificación RTL
-> (pre-síntesis). El proyecto también solicita simulaciones posteriores
-> con información de temporizado después de síntesis y colocación/ruteo,
-> además del análisis de tiempos; esas etapas corresponden a
-> verificaciones posteriores del desarrollo.
 
 
 </details>
