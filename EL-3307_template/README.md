@@ -108,6 +108,298 @@ Diagramas, texto explicativo...
 
 #### 5. Testbench
 Descripción y resultados de las pruebas hechas
+# Verificación del módulo de codificación binario a 7 segmentos
+
+## 1. Descripción del módulo
+
+El módulo `binario_7seg` forma parte del transmisor del proyecto. Su
+función es recibir una palabra binaria de 4 bits ingresada mediante los
+conmutadores y generar las señales necesarias para visualizar dicha
+palabra en un display de 7 segmentos utilizando notación hexadecimal.
+
+Este subsistema se implementa dentro de la FPGA. El proyecto establece
+que el usuario debe poder confirmar visualmente la palabra ingresada
+antes de que sea enviada al codificador Hamming (7,4).
+
+### Señales del módulo
+
+  -------------------------------------------------------------------------
+  Señal             Tipo                             Ancho Función
+  ----------------- ---------------- --------------------- ----------------
+  `codigo_bin_pi`   Entrada                         4 bits Palabra binaria
+                                                           ingresada por el
+                                                           usuario
+
+  `catodo_po`       Salida                          7 bits Señales de
+                                                           control de los
+                                                           segmentos
+  -------------------------------------------------------------------------
+
+La correspondencia utilizada entre las salidas y los segmentos es:
+
+  Salida           Segmento
+  ---------------- ----------
+  `catodo_po[6]`   G
+  `catodo_po[5]`   F
+  `catodo_po[4]`   C
+  `catodo_po[3]`   B
+  `catodo_po[2]`   A
+  `catodo_po[1]`   D
+  `catodo_po[0]`   E
+
+El display utilizado es de ánodo común, por lo que un `0` en el cátodo
+permite encender el segmento correspondiente.
+
+## 2. Objetivo del testbench
+
+El testbench `tb_binario_7seg` se desarrolló para verificar mediante
+simulación RTL (pre-síntesis) el funcionamiento del módulo
+`binario_7seg`.
+
+La prueba busca comprobar las 16 combinaciones posibles de la entrada de
+cuatro bits y observar la respuesta generada en `catodo_po[6:0]`.
+
+Además, el testbench genera un archivo `.vcd` para visualizar las
+señales mediante GTKWave.
+
+## 3. Estructura del testbench
+
+El archivo utilizado es:
+
+``` text
+src/
+├── design/
+│   └── binario_7seg.sv
+└── sim/
+    └── tb_binario_7seg.sv
+```
+
+El testbench contiene:
+
+1.  La señal de entrada controlada por el testbench.
+2.  La señal de salida observada.
+3.  La instancia del módulo bajo prueba (DUT).
+4.  La generación del archivo VCD.
+5.  Un bloque `initial` que aplica las diferentes entradas.
+6.  La finalización de la simulación mediante `$finish`.
+
+## 4. Señales del testbench
+
+La entrada se declara como:
+
+``` systemverilog
+reg [3:0] codigo_bin_pi;
+```
+
+Se utiliza `reg` porque el testbench asigna diferentes valores a esta
+señal durante la simulación.
+
+La salida se declara como:
+
+``` systemverilog
+wire [6:0] catodo_po;
+```
+
+Se utiliza `wire` porque la señal es generada por el módulo bajo prueba
+y el testbench solamente la observa.
+
+La relación entre ambos elementos es:
+
+``` text
+              TESTBENCH
+                  │
+                  │ codigo_bin_pi[3:0]
+                  ▼
+          ┌─────────────────┐
+          │  binario_7seg   │
+          │      DUT        │
+          └────────┬────────┘
+                   │
+                   │ catodo_po[6:0]
+                   ▼
+              TESTBENCH
+                   │
+                   ▼
+                GTKWave
+```
+
+## 5. Instancia del DUT
+
+El módulo se instancia dentro del testbench mediante:
+
+``` systemverilog
+binario_7seg DUT (
+    .codigo_bin_pi(codigo_bin_pi),
+    .catodo_po(catodo_po)
+);
+```
+
+`DUT` significa *Device Under Test* y corresponde al circuito que se
+desea verificar.
+
+La entrada del DUT queda conectada a la señal `codigo_bin_pi` del
+testbench y la salida del DUT queda conectada a `catodo_po`.
+
+## 6. Generación del archivo VCD
+
+El testbench utiliza:
+
+``` systemverilog
+initial begin
+    $dumpfile("binario_7seg.vcd");
+    $dumpvars(0, tb_binario_7seg);
+end
+```
+
+`$dumpfile` define el nombre del archivo que almacenará la información
+de la simulación:
+
+``` text
+binario_7seg.vcd
+```
+
+`$dumpvars` indica las señales que deben registrarse para poder
+visualizarlas posteriormente en GTKWave.
+
+## 7. Aplicación de las entradas
+
+Se probaron las 16 combinaciones posibles de cuatro bits:
+
+``` text
+0000 → 0001 → 0010 → 0011 → 0100 → 0101 → 0110 → 0111
+1000 → 1001 → 1010 → 1011 → 1100 → 1101 → 1110 → 1111
+```
+
+Cada entrada se mantiene durante 10 ns antes de aplicar la siguiente.
+Por ejemplo:
+
+``` systemverilog
+codigo_bin_pi = 4'd0;
+#10;
+
+codigo_bin_pi = 4'd1;
+#10;
+
+codigo_bin_pi = 4'd2;
+#10;
+```
+
+Por lo tanto, el primer valor permanece de 0 a 10 ns, el segundo de 10 a
+20 ns, y así sucesivamente.
+
+La simulación observada tuvo una duración total de aproximadamente 160
+ns.
+
+## 8. Resultados de la simulación RTL
+
+Al ejecutar `make test` se generó el archivo `binario_7seg.vcd`.
+Posteriormente se utilizó `make wv` para abrirlo en GTKWave.
+
+Las señales observadas fueron:
+
+``` text
+codigo_bin_pi[3:0]
+catodo_po[6:0]
+```
+
+GTKWave mostró los buses en representación hexadecimal. Los valores
+observados fueron:
+
+    Entrada   `catodo_po[6:0]`
+  --------- ------------------
+        `0`               `40`
+        `1`               `67`
+        `2`               `20`
+        `3`               `21`
+        `4`               `07`
+        `5`               `09`
+        `6`               `08`
+        `7`               `63`
+        `8`               `00`
+        `9`               `01`
+        `A`               `02`
+        `B`               `0C`
+        `C`               `18`
+        `D`               `20`
+        `E`               `18`
+        `F`               `1A`
+
+La secuencia de entrada observada fue:
+
+``` text
+0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → A → B → C → D → E → F
+```
+
+con cambios cada 10 ns.
+
+## 9. Interpretación de los resultados
+
+Los valores de `catodo_po[6:0]` aparecen en hexadecimal porque GTKWave
+utiliza esa representación para el bus.
+
+Por ejemplo:
+
+``` text
+40 hexadecimal = 1000000 binario
+67 hexadecimal = 1100111 binario
+20 hexadecimal = 0100000 binario
+```
+
+Por lo tanto, cada valor mostrado corresponde a los siete bits de salida
+del decodificador.
+
+La forma de onda permite observar que, cada vez que cambia
+`codigo_bin_pi`, el módulo genera el patrón correspondiente en
+`catodo_po`.
+
+## 10. Flujo utilizado
+
+La simulación se ejecutó desde:
+
+``` text
+src/build
+```
+
+mediante:
+
+``` powershell
+make test
+```
+
+Este comando ejecuta la simulación RTL utilizando el testbench y genera:
+
+``` text
+binario_7seg.vcd
+```
+
+Para visualizar las ondas se utilizó:
+
+``` powershell
+make wv
+```
+
+lo cual abre el archivo VCD en GTKWave.
+
+## 11. Conclusión
+
+El testbench permitió verificar mediante simulación RTL el
+comportamiento del módulo `binario_7seg` para las 16 combinaciones
+posibles de su entrada de cuatro bits.
+
+La simulación se ejecutó correctamente, se generó el archivo VCD y se
+visualizaron en GTKWave tanto la entrada `codigo_bin_pi[3:0]` como la
+salida `catodo_po[6:0]`.
+
+Los resultados obtenidos permiten comprobar la respuesta del
+decodificador para todo el rango de entrada `0`--`F` antes de realizar
+la implementación física del módulo en la FPGA.
+
+> **Nota:** Esta sección corresponde a la verificación RTL
+> (pre-síntesis). El proyecto también solicita simulaciones posteriores
+> con información de temporizado después de síntesis y colocación/ruteo,
+> además del análisis de tiempos; esas etapas corresponden a
+> verificaciones posteriores del desarrollo.
+
 
 </details>
 
