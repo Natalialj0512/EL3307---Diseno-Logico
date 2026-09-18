@@ -108,9 +108,9 @@ Diagramas, texto explicativo...
 
 #### 5. Testbench
 Descripción y resultados de las pruebas hechas
-# Verificación del módulo de codificación binario a 7 segmentos
+### Verificación del módulo de codificación binario a 7 segmentos
 
-## 1. Descripción del módulo
+### 1. Descripción del módulo
 
 El módulo `binario_7seg` forma parte del transmisor del proyecto. Su
 función es recibir una palabra binaria de 4 bits ingresada mediante los
@@ -150,7 +150,7 @@ La correspondencia utilizada entre las salidas y los segmentos es:
 El display utilizado es de ánodo común, por lo que un `0` en el cátodo
 permite encender el segmento correspondiente.
 
-## 2. Objetivo del testbench
+### 2. Objetivo del testbench
 
 El testbench `tb_binario_7seg` se desarrolló para verificar mediante
 simulación RTL (pre-síntesis) el funcionamiento del módulo
@@ -162,7 +162,7 @@ cuatro bits y observar la respuesta generada en `catodo_po[6:0]`.
 Además, el testbench genera un archivo `.vcd` para visualizar las
 señales mediante GTKWave.
 
-## 3. Estructura del testbench
+### 3. Estructura del testbench
 
 El archivo utilizado es:
 
@@ -183,7 +183,7 @@ El testbench contiene:
 5.  Un bloque `initial` que aplica las diferentes entradas.
 6.  La finalización de la simulación mediante `$finish`.
 
-## 4. Señales del testbench
+### 4. Señales del testbench
 
 La entrada se declara como:
 
@@ -223,7 +223,7 @@ La relación entre ambos elementos es:
                 GTKWave
 ```
 
-## 5. Instancia del DUT
+### 5. Instancia del DUT
 
 El módulo se instancia dentro del testbench mediante:
 
@@ -240,7 +240,7 @@ desea verificar.
 La entrada del DUT queda conectada a la señal `codigo_bin_pi` del
 testbench y la salida del DUT queda conectada a `catodo_po`.
 
-## 6. Generación del archivo VCD
+### 6. Generación del archivo VCD
 
 El testbench utiliza:
 
@@ -261,7 +261,7 @@ binario_7seg.vcd
 `$dumpvars` indica las señales que deben registrarse para poder
 visualizarlas posteriormente en GTKWave.
 
-## 7. Aplicación de las entradas
+### 7. Aplicación de las entradas
 
 Se probaron las 16 combinaciones posibles de cuatro bits:
 
@@ -290,7 +290,7 @@ Por lo tanto, el primer valor permanece de 0 a 10 ns, el segundo de 10 a
 La simulación observada tuvo una duración total de aproximadamente 160
 ns.
 
-## 8. Resultados de la simulación RTL
+### 8. Resultados de la simulación RTL
 
 Al ejecutar `make test` se generó el archivo `binario_7seg.vcd`.
 Posteriormente se utilizó `make wv` para abrirlo en GTKWave.
@@ -332,7 +332,7 @@ La secuencia de entrada observada fue:
 
 con cambios cada 10 ns.
 
-## 9. Interpretación de los resultados
+### 9. Interpretación de los resultados
 
 Los valores de `catodo_po[6:0]` aparecen en hexadecimal porque GTKWave
 utiliza esa representación para el bus.
@@ -352,7 +352,7 @@ La forma de onda permite observar que, cada vez que cambia
 `codigo_bin_pi`, el módulo genera el patrón correspondiente en
 `catodo_po`.
 
-## 10. Flujo utilizado
+### 10. Flujo utilizado
 
 La simulación se ejecutó desde:
 
@@ -380,7 +380,7 @@ make wv
 
 lo cual abre el archivo VCD en GTKWave.
 
-## 11. Conclusión
+### 11. Conclusión
 
 El testbench permitió verificar mediante simulación RTL el
 comportamiento del módulo `binario_7seg` para las 16 combinaciones
