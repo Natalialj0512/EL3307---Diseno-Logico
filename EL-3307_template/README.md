@@ -112,43 +112,32 @@ Descripción y resultados de las pruebas hechas
 
 ### 1. Descripción del módulo
 
-El módulo `binario_7seg` forma parte del transmisor del proyecto. Su
-función es recibir una palabra binaria de 4 bits ingresada mediante los
-conmutadores y generar las señales necesarias para visualizar dicha
-palabra en un display de 7 segmentos utilizando notación hexadecimal.
+El módulo `binario_7seg` forma parte del transmisor del proyecto. Su función es recibir una palabra binaria de 4 bits ingresada mediante los conmutadores y generar las señales necesarias para visualizar dicha palabra en un display de 7 segmentos utilizando notación hexadecimal.
 
-Este subsistema se implementa dentro de la FPGA. El proyecto establece
-que el usuario debe poder confirmar visualmente la palabra ingresada
-antes de que sea enviada al codificador Hamming (7,4).
+Este subsistema se implementa dentro de la FPGA. El proyecto establece que el usuario debe poder confirmar visualmente la palabra ingresada antes de que sea enviada al codificador Hamming (7,4).
 
 ### Señales del módulo
 
-  -------------------------------------------------------------------------
-  Señal             Tipo                             Ancho Función
-  ----------------- ---------------- --------------------- ----------------
-  `codigo_bin_pi`   Entrada                         4 bits Palabra binaria
-                                                           ingresada por el
-                                                           usuario
-
-  `catodo_po`       Salida                          7 bits Señales de
-                                                           control de los
-                                                           segmentos
-  -------------------------------------------------------------------------
+| Señal | Tipo | Ancho | Función |
+|:---|:---:|:---:|:---|
+| `codigo_bin_pi` | Entrada | 4 bits | Palabra binaria ingresada por el usuario |
+| `catodo_po` | Salida | 7 bits | Señales de control de los segmentos del display |
 
 La correspondencia utilizada entre las salidas y los segmentos es:
 
-  Salida           Segmento
-  ---------------- ----------
-  `catodo_po[6]`   G
-  `catodo_po[5]`   F
-  `catodo_po[4]`   C
-  `catodo_po[3]`   B
-  `catodo_po[2]`   A
-  `catodo_po[1]`   D
-  `catodo_po[0]`   E
+### Correspondencia de las salidas con los segmentos
 
-El display utilizado es de ánodo común, por lo que un `0` en el cátodo
-permite encender el segmento correspondiente.
+| Salida | Segmento |
+|:---|:---:|
+| `catodo_po[6]` | G |
+| `catodo_po[5]` | F |
+| `catodo_po[4]` | C |
+| `catodo_po[3]` | B |
+| `catodo_po[2]` | A |
+| `catodo_po[1]` | D |
+| `catodo_po[0]` | E |
+
+El display utilizado es de ánodo común, por lo que un `0` en el cátodo permite encender el segmento correspondiente.
 
 ### 2. Objetivo del testbench
 
