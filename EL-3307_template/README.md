@@ -517,7 +517,7 @@ observar simultáneamente la entrada y salida de una de las etapas.
 
 ### Forma de onda experimental
 
-![Oscilador de anillo con cinco inversores](doc/images/DS0001A1.png)
+![Oscilador de anillo con cinco inversores](doc/images/DS0001A1.PNG)
 
 ### Resultados experimentales
 
@@ -625,7 +625,7 @@ N = 3 inversores
 
 ### Forma de onda experimental
 
-![Oscilador de anillo con tres inversores](doc/images/DS0001A2.png)
+![Oscilador de anillo con tres inversores](doc/images/DS0001A2.PNG)
 
 ### Resultados experimentales
 
@@ -773,7 +773,7 @@ la señal.
 
 ### Forma de onda experimental
 
-![Oscilador de anillo con tres inversores y 1 m de cable](doc/images/DS0001A3.png)
+![Oscilador de anillo con tres inversores y 1 m de cable](doc/images/DS0001A3.PNG)
 
 ### Resultados experimentales
 
@@ -905,7 +905,7 @@ tierra para estabilizarlo.
 
 ### Forma de onda experimental
 
-![Un inversor con entrada y salida conectadas](doc/images/DS0001A4.png)
+![Un inversor con entrada y salida conectadas](doc/images/DS0001A4.PNG)
 
 ### Resultados experimentales
 
