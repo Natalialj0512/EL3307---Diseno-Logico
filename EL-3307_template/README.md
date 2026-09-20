@@ -38,47 +38,50 @@ Además, como parte del proyecto se implementa y caracteriza experimentalmente u
 
 ## 4. Asignación de pines y conexiones
 
-La siguiente tabla presenta la asignación de pines utilizada para las entradas
-y salidas externas de la FPGA, así como las conexiones destinadas a la
-comunicación entre las FPGA del transmisor y receptor.
+La siguiente tabla presenta la asignación de pines utilizada para las
+entradas y salidas externas de la FPGA, así como las conexiones destinadas
+a la comunicación entre la FPGA transmisora y la FPGA receptora.
+
+### 4.1 Asignación general de pines
 
 | Señal | Pin Tang Nano 9K | Función / Descripción |
 |---|---:|---|
-| `error_pos1[0]` | 36 | Switch de datos para colocar el primer error, bit 0 de la posición |
-| `error_pos1[1]` | 37 | Switch de datos para colocar el primer error, bit 1 de la posición |
-| `error_pos1[2]` | 38 | Switch de datos para colocar el primer error, bit 2 de la posición |
-| `error_pos2[0]` | 26 | Switch de datos para colocar el segundo error, bit 0 de la posición |
-| `error_pos2[1]` | 25 | Switch de datos para colocar el segundo error, bit 1 de la posición |
-| `error_pos2[2]` | 39 | Switch de datos para colocar el segundo error, bit 2 de la posición |
-| `datos[0]` | 30 | Switch de entrada de datos, bit 0 de la palabra de 4 bits |
-| `datos[1]` | 29 | Switch de entrada de datos, bit 1 de la palabra de 4 bits |
-| `datos[2]` | 28 | Switch de entrada de datos, bit 2 de la palabra de 4 bits |
-| `datos[3]` | 27 | Switch de entrada de datos, bit 3 de la palabra de 4 bits |
-| `C0` | 35 | Salida de compuerta XOR correspondiente al bit de Hamming `C0` |
-| `C1` | 40 | Salida de compuerta XOR correspondiente al bit de Hamming `C1` |
-| `C2` | 33 | Salida de compuerta XOR correspondiente al bit de Hamming `C2` |
-| `P` | 34 | Salida de compuerta XOR correspondiente al bit de paridad global `P` |
-| `modo` | 48 | Switch de selección del modo de funcionamiento del sistema (Transmisor/Receptor) |
-| `display` | 49 | Switch de selección de la información mostrada en los displays |
-| `A` | 72 | Señal de control del segmento A del display de 7 segmentos |
-| `B` | 71 | Señal de control del segmento B del display de 7 segmentos |
-| `C` | 70 | Señal de control del segmento C del display de 7 segmentos |
-| `D` | 75 | Señal de control del segmento D del display de 7 segmentos |
-| `E` | 76 | Señal de control del segmento E del display de 7 segmentos |
-| `F` | 74 | Señal de control del segmento F del display de 7 segmentos |
-| `G` | 73 | Señal de control del segmento G del display de 7 segmentos |
-| `DIG1` | 63 | Control del ánodo común del primer dígito mediante transistor PNP |
-| `DIG2` | 77 | Control del ánodo común del segundo dígito mediante transistor PNP |
-| `com[0]` | 41 | Línea 0 de comunicación entre la FPGA transmisora y la FPGA receptora |
-| `com[1]` | 42 | Línea 1 de comunicación entre la FPGA transmisora y la FPGA receptora |
-| `com[2]` | 51 | Línea 2 de comunicación entre la FPGA transmisora y la FPGA receptora |
-| `com[3]` | 53 | Línea 3 de comunicación entre la FPGA transmisora y la FPGA receptora |
-| `com[4]` | 54 | Línea 4 de comunicación entre la FPGA transmisora y la FPGA receptora |
-| `com[5]` | 55 | Línea 5 de comunicación entre la FPGA transmisora y la FPGA receptora |
-| `com[6]` | 56 | Línea 6 de comunicación entre la FPGA transmisora y la FPGA receptora |
-| `com[7]` | 57 | Línea 7 de comunicación entre la FPGA transmisora y la FPGA receptora |
+| `codigo_bin_pi[0]` | 30 | Entrada del bit 0 de la palabra de datos mediante DIP switch |
+| `codigo_bin_pi[1]` | 29 | Entrada del bit 1 de la palabra de datos mediante DIP switch |
+| `codigo_bin_pi[2]` | 28 | Entrada del bit 2 de la palabra de datos mediante DIP switch |
+| `codigo_bin_pi[3]` | 27 | Entrada del bit 3 de la palabra de datos mediante DIP switch |
+| `error_pos1_pi[0]` | 36 | Bit 0 del switch de selección de posición para la inserción del primer error |
+| `error_pos1_pi[1]` | 37 | Bit 1 del switch de selección de posición para la inserción del primer error |
+| `error_pos1_pi[2]` | 38 | Bit 2 del switch de selección de posición para la inserción del primer error |
+| `error_pos2_pi[0]` | 26 | Bit 0 del switch de selección de posición para la inserción del segundo error |
+| `error_pos2_pi[1]` | 25 | Bit 1 del switch de selección de posición para la inserción del segundo error |
+| `error_pos2_pi[2]` | 39 | Bit 2 del switch de selección de posición para la inserción del segundo error |
+| `c0_pi` | 40 | Entrada proveniente de la compuerta XOR correspondiente al bit de paridad `C0` |
+| `c1_pi` | 33 | Entrada proveniente de la compuerta XOR correspondiente al bit de paridad `C1` |
+| `c2_pi` | 34 | Entrada proveniente de la compuerta XOR correspondiente al bit de paridad `C2` |
+| `p_pi` | 41 | Entrada de la compuerta XOR correspondiente al bit de paridad global `P` para DED |
+| `modo_pi` | 69 | Switch de selección del modo de funcionamiento: transmisor o receptor |
+| `display_pi` | 48 | Switch de selección de la información mostrada en los displays (palabra recibida o bit de error) |
+| `dot_po` | 31 | Salida para el punto decimal del display, utilizada como indicador de doble error (DED) |
+| `catodo_po[0]` | 76 | Control del segmento `E` del display de 7 segmentos |
+| `catodo_po[1]` | 75 | Control del segmento `D` del display de 7 segmentos |
+| `catodo_po[2]` | 72 | Control del segmento `A` del display de 7 segmentos |
+| `catodo_po[3]` | 71 | Control del segmento `B` del display de 7 segmentos |
+| `catodo_po[4]` | 70 | Control del segmento `C` del display de 7 segmentos |
+| `catodo_po[5]` | 74 | Control del segmento `F` del display de 7 segmentos |
+| `catodo_po[6]` | 73 | Control del segmento `G` del display de 7 segmentos |
+| `dig1_po` | 63 | Control del ánodo del primer display mediante transistor PNP |
+| `dig2_po` | 77 | Control del ánodo del segundo display mediante transistor PNP |
 
----
+### 4.2 Comunicación FPGA ↔ FPGA
+
+La comunicación entre la FPGA transmisora y la FPGA receptora se realiza
+mediante un bus bidireccional de 8 bits.
+
+La palabra transmitida se organiza según el orden visto en clase (para que no se pueda introducir un error en la paridad global):
+
+```text
+P  i3  i2  i1  C2  i0  C1  C0
 
 ## 5. Desarrollo
 
