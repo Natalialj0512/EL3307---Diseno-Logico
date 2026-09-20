@@ -82,6 +82,9 @@ La palabra transmitida se organiza según el orden visto en clase (para que no s
 
 ```text
 P  i3  i2  i1  C2  i0  C1  C0
+```
+
+---
 
 ## 5. Desarrollo
 
@@ -92,43 +95,34 @@ P  i3  i2  i1  C2  i0  C1  C0
 <summary><strong>Módulo: Lectura y visualización de la palabra</strong></summary>
 
 #### 1. Encabezado del módulo
+
+El módulo `binario_7seg` es parte del transmisor. Su función es recibir una palabra binaria de 4 bits ingresada mediante los dip switches y generar las señales necesarias para visualizar la palabra ingresada en un display de 7 segmentos utilizando notación hexadecimal.
+
+Este subsistema se implementa dentro de la FPGA y permite al usuario confirmar visualmente la palabra ingresada antes de que sea enviada al codificador Hamming (7,4).
+
+##### Código del módulo
+
 ```SystemVerilog
-module mi_modulo(
-    input logic     entrada_i,      
-    output logic    salida_i 
-    );
+module binario_7seg (
+    input  wire [3:0] codigo_bin_pi,
+    output wire [6:0] catodo_po
+);
+
+endmodule
 ```
 
 #### 2. Parámetros
--Lista de parámetros
+Este módulo no utiliza parámetros configurables.
+
 
 #### 3. Entradas y salidas
-- `entrada_i`: descripción de la entrada
-- `salida_o`: descripción de la salida
-- 
-#### 4. Criterios de diseño
-Diagramas, texto explicativo...
-
-#### 5. Testbench
-Descripción y resultados de las pruebas hechas
-### Verificación del módulo de codificación binario a 7 segmentos
-
-### 1. Descripción del módulo
-
-El módulo `binario_7seg` forma parte del transmisor del proyecto. Su función es recibir una palabra binaria de 4 bits ingresada mediante los conmutadores y generar las señales necesarias para visualizar dicha palabra en un display de 7 segmentos utilizando notación hexadecimal.
-
-Este subsistema se implementa dentro de la FPGA. El proyecto establece que el usuario debe poder confirmar visualmente la palabra ingresada antes de que sea enviada al codificador Hamming (7,4).
-
-### Señales del módulo
 
 | Señal | Tipo | Ancho | Función |
 |:---|:---:|:---:|:---|
-| `codigo_bin_pi` | Entrada | 4 bits | Palabra binaria ingresada por el usuario |
+| `codigo_bin_pi` | Entrada | 4 bits | Palabra binaria ingresada por el usuario mediante los dip switches |
 | `catodo_po` | Salida | 7 bits | Señales de control de los segmentos del display |
 
 La correspondencia utilizada entre las salidas y los segmentos es:
-
-### Correspondencia de las salidas con los segmentos
 
 | Salida | Segmento |
 |:---|:---:|
@@ -142,23 +136,29 @@ La correspondencia utilizada entre las salidas y los segmentos es:
 
 El display utilizado es de ánodo común, por lo que un `0` en el cátodo permite encender el segmento correspondiente.
 
-### 2. Objetivo del testbench
 
-El testbench `tb_binario_7seg` se desarrolló para verificar mediante
-simulación RTL (pre-síntesis) el funcionamiento del módulo
-`binario_7seg`.
+#### 4. Criterios de diseño
+El módulo recibe una palabra binaria de 4 bits y genera las señales correspondientes para mostrar su representación hexadecimal en el display de 7 segmentos.
 
-La prueba busca comprobar las 16 combinaciones posibles de la entrada de
-cuatro bits y observar la respuesta generada en `catodo_po[6:0]`.
+La lógica de control de los segmentos se implementa mediante expresiones booleanas en SystemVerilog.
 
-Además, el testbench genera un archivo `.vcd` para visualizar las
-señales mediante GTKWave.
+La visualización permite verificar directamente la palabra introducida mediante los conmutadores antes de continuar con el proceso de codificación Hamming.
 
-### 3. Estructura del testbench
 
-El archivo utilizado es:
+#### 5. Testbench
+##### 5.1 Objetivo del testbench
 
-``` text
+El testbench `tb_binario_7seg` se desarrolló para verificar mediante simulación RTL (pre-síntesis) el funcionamiento del módulo `binario_7seg`.
+
+La prueba busca comprobar las 16 combinaciones posibles de la entrada de cuatro bits y observar la respuesta generada en `catodo_po[6:0]`.
+
+Además, el testbench genera un archivo `.vcd` para visualizar las señales mediante GTKWave.
+
+##### 5.2 Estructura del testbench
+
+Los archivos utilizados son:
+
+```text
 src/
 ├── design/
 │   └── binario_7seg.sv
@@ -168,36 +168,34 @@ src/
 
 El testbench contiene:
 
-1.  La señal de entrada controlada por el testbench.
-2.  La señal de salida observada.
-3.  La instancia del módulo bajo prueba (DUT).
-4.  La generación del archivo VCD.
-5.  Un bloque `initial` que aplica las diferentes entradas.
-6.  La finalización de la simulación mediante `$finish`.
+1. La señal de entrada controlada por el testbench.
+2. La señal de salida observada.
+3. La instancia del módulo bajo prueba (DUT).
+4. La generación del archivo VCD.
+5. Un bloque `initial` que aplica las diferentes entradas.
+6. La finalización de la simulación mediante `$finish`.
 
-### 4. Señales del testbench
+##### 5.3 Señales del testbench
 
 La entrada se declara como:
 
-``` systemverilog
+```SystemVerilog
 reg [3:0] codigo_bin_pi;
 ```
 
-Se utiliza `reg` porque el testbench asigna diferentes valores a esta
-señal durante la simulación.
+Se utiliza `reg` porque el testbench asigna diferentes valores a esta señal durante la simulación.
 
 La salida se declara como:
 
-``` systemverilog
+```SystemVerilog
 wire [6:0] catodo_po;
 ```
 
-Se utiliza `wire` porque la señal es generada por el módulo bajo prueba
-y el testbench solamente la observa.
+Se utiliza `wire` porque la señal es generada por el módulo bajo prueba y el testbench solamente la observa.
 
 La relación entre ambos elementos es:
 
-``` text
+```text
               TESTBENCH
                   │
                   │ codigo_bin_pi[3:0]
@@ -215,181 +213,93 @@ La relación entre ambos elementos es:
                 GTKWave
 ```
 
-### 5. Instancia del DUT
+##### 5.4 Instancia del DUT
 
 El módulo se instancia dentro del testbench mediante:
 
-``` systemverilog
+```SystemVerilog
 binario_7seg DUT (
     .codigo_bin_pi(codigo_bin_pi),
     .catodo_po(catodo_po)
 );
 ```
 
-`DUT` significa *Device Under Test* y corresponde al circuito que se
-desea verificar.
+##### 5.5 Generación del archivo VCD
 
-La entrada del DUT queda conectada a la señal `codigo_bin_pi` del
-testbench y la salida del DUT queda conectada a `catodo_po`.
+Para almacenar las señales de la simulación y posteriormente observarlas en GTKWave se utilizan:
 
-### 6. Generación del archivo VCD
-
-El testbench utiliza:
-
-``` systemverilog
-initial begin
-    $dumpfile("binario_7seg.vcd");
-    $dumpvars(0, tb_binario_7seg);
-end
+```SystemVerilog
+$dumpfile("binario_7seg.vcd");
+$dumpvars(0, tb_binario_7seg);
 ```
 
-`$dumpfile` define el nombre del archivo que almacenará la información
-de la simulación:
+##### 5.6 Aplicación de las entradas
 
-``` text
-binario_7seg.vcd
+El testbench prueba las 16 combinaciones posibles de la entrada de 4 bits.
+
+Cada combinación se mantiene durante 10 ns antes de aplicar la siguiente. Por lo tanto, la simulación completa tiene una duración aproximada de 160 ns.
+
+Las entradas corresponden a los valores hexadecimales:
+
+```text
+0, 1, 2, 3, 4, 5, 6, 7,
+8, 9, A, B, C, D, E, F
 ```
 
-`$dumpvars` indica las señales que deben registrarse para poder
-visualizarlas posteriormente en GTKWave.
+##### 5.7 Resultados de la simulación RTL
 
-### 7. Aplicación de las entradas
+Los valores observados durante la simulación fueron:
 
-Se probaron las 16 combinaciones posibles de cuatro bits:
+| Entrada | `catodo_po` |
+|:---:|:---:|
+| 0 | `40` |
+| 1 | `67` |
+| 2 | `20` |
+| 3 | `21` |
+| 4 | `07` |
+| 5 | `09` |
+| 6 | `08` |
+| 7 | `63` |
+| 8 | `00` |
+| 9 | `01` |
+| A | `02` |
+| B | `0C` |
+| C | `18` |
+| D | `20` |
+| E | `18` |
+| F | `1A` |
 
-``` text
-0000 → 0001 → 0010 → 0011 → 0100 → 0101 → 0110 → 0111
-1000 → 1001 → 1010 → 1011 → 1100 → 1101 → 1110 → 1111
-```
+Estos valores corresponden a las señales de control de los siete segmentos según el mapeo definido para el display de ánodo común.
 
-Cada entrada se mantiene durante 10 ns antes de aplicar la siguiente.
-Por ejemplo:
+##### 5.8 Flujo de simulación
 
-``` systemverilog
-codigo_bin_pi = 4'd0;
-#10;
+La simulación se ejecutó utilizando las herramientas del entorno de desarrollo del proyecto.
 
-codigo_bin_pi = 4'd1;
-#10;
+Desde la carpeta correspondiente a la simulación se utilizaron los comandos:
 
-codigo_bin_pi = 4'd2;
-#10;
-```
-
-Por lo tanto, el primer valor permanece de 0 a 10 ns, el segundo de 10 a
-20 ns, y así sucesivamente.
-
-La simulación observada tuvo una duración total de aproximadamente 160
-ns.
-
-### 8. Resultados de la simulación RTL
-
-Al ejecutar `make test` se generó el archivo `binario_7seg.vcd`.
-Posteriormente se utilizó `make wv` para abrirlo en GTKWave.
-
-Las señales observadas fueron:
-
-``` text
-codigo_bin_pi[3:0]
-catodo_po[6:0]
-```
-
-GTKWave mostró los buses en representación hexadecimal. Los valores
-observados fueron:
-
-    Entrada   `catodo_po[6:0]`
-  --------- ------------------
-        `0`               `40`
-        `1`               `67`
-        `2`               `20`
-        `3`               `21`
-        `4`               `07`
-        `5`               `09`
-        `6`               `08`
-        `7`               `63`
-        `8`               `00`
-        `9`               `01`
-        `A`               `02`
-        `B`               `0C`
-        `C`               `18`
-        `D`               `20`
-        `E`               `18`
-        `F`               `1A`
-
-La secuencia de entrada observada fue:
-
-``` text
-0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → A → B → C → D → E → F
-```
-
-con cambios cada 10 ns.
-
-### 9. Interpretación de los resultados
-
-Los valores de `catodo_po[6:0]` aparecen en hexadecimal porque GTKWave
-utiliza esa representación para el bus.
-
-Por ejemplo:
-
-``` text
-40 hexadecimal = 1000000 binario
-67 hexadecimal = 1100111 binario
-20 hexadecimal = 0100000 binario
-```
-
-Por lo tanto, cada valor mostrado corresponde a los siete bits de salida
-del decodificador.
-
-La forma de onda permite observar que, cada vez que cambia
-`codigo_bin_pi`, el módulo genera el patrón correspondiente en
-`catodo_po`.
-
-### 10. Flujo utilizado
-
-La simulación se ejecutó desde:
-
-``` text
-src/build
-```
-
-mediante:
-
-``` powershell
+```text
 make test
 ```
 
-Este comando ejecuta la simulación RTL utilizando el testbench y genera:
+para ejecutar el testbench, y:
 
-``` text
-binario_7seg.vcd
-```
-
-Para visualizar las ondas se utilizó:
-
-``` powershell
+```text
 make wv
 ```
 
-lo cual abre el archivo VCD en GTKWave.
+para visualizar las señales generadas mediante GTKWave.
 
-### 11. Conclusión
+El archivo VCD generado permite observar la variación de `codigo_bin_pi` y la respuesta correspondiente de `catodo_po`.
 
-El testbench permitió verificar mediante simulación RTL el
-comportamiento del módulo `binario_7seg` para las 16 combinaciones
-posibles de su entrada de cuatro bits.
+##### 5.9 Resultado del testbench
 
-La simulación se ejecutó correctamente, se generó el archivo VCD y se
-visualizaron en GTKWave tanto la entrada `codigo_bin_pi[3:0]` como la
-salida `catodo_po[6:0]`.
+La simulación RTL permitió comprobar el comportamiento del módulo para las 16 combinaciones posibles de la palabra de entrada.
 
-Los resultados obtenidos permiten comprobar la respuesta del
-decodificador para todo el rango de entrada `0`--`F` antes de realizar
-la implementación física del módulo en la FPGA.
+Las señales observadas en GTKWave mostraron la relación esperada entre la entrada `codigo_bin_pi[3:0]` y la salida `catodo_po[6:0]`.
 
-
+Por lo tanto, el testbench permitió verificar funcionalmente el módulo `binario_7seg` antes de continuar con las siguientes etapas del transmisor.
 
 </details>
-
 
 <details>
 <summary><strong>Módulo: Codificación Hamming (7,4)</strong></summary>
@@ -427,25 +337,69 @@ la implementación física del módulo en la FPGA.
 <summary><strong>Módulo: Generador de error</strong></summary>
 
 #### 1. Encabezado del módulo
+El módulo `generador_error` es parte del transmisor y tiene como función introducir uno o dos errores en la palabra codificada mediante Hamming (7,4).
+
+La posición de cada error se selecciona mediante dos entradas de 3 bits. Cada entrada permite seleccionar una de las siete posiciones correspondientes a los bits del código Hamming. El valor `000` indica que no se introduce error.
+
+El bit de paridad global `P` no se modifica, ya que corresponde a la paridad utilizada para la detección de doble error (DED).
+
+```SystemVerilog
+module generador_error (
+    input wire [7:0] palabra_codificada_pi,
+    input wire [2:0] error_pos1_pi,
+    input wire [2:0] error_pos2_pi,
+    output wire [7:0] palabra_error_po
+);
+```
 
 #### 2. Parámetros
+Este módulo no utiliza parámetros configurables.
+
 
 #### 3. Entradas y salidas
+| Señal | Tipo | Ancho | Función |
+|:---|:---:|:---:|:---|
+| `palabra_codificada_pi` | Entrada | 8 bits | Palabra codificada mediante Hamming (7,4) con el bit de paridad global |
+| `error_pos1_pi` | Entrada | 3 bits | Selecciona la posición del primer error |
+| `error_pos2_pi` | Entrada | 3 bits | Selecciona la posición del segundo error |
+| `palabra_error_po` | Salida | 8 bits | Palabra codificada con los errores seleccionados |
+
+Las posiciones seleccionables mediante `error_pos1_pi` y `error_pos2_pi` son:
+
+| Entrada | Posición |
+|:---:|:---:|
+| `000` | Sin error |
+| `001` | Posición 1 |
+| `010` | Posición 2 |
+| `011` | Posición 3 |
+| `100` | Posición 4 |
+| `101` | Posición 5 |
+| `110` | Posición 6 |
+| `111` | Posición 7 |
+
+Las posiciones 1 a 7 corresponden exclusivamente a los siete bits del código Hamming. El bit `P`, correspondiente al bit de paridad global, permanece sin modificaciones.
+
 
 #### 4. Criterios de diseño
+El módulo utiliza dos entradas de 3 bits para seleccionar independientemente las posiciones donde se introducirán los errores.
+
+Cada entrada se decodifica mediante expresiones booleanas para generar una señal asociada a cada una de las siete posiciones posibles.
+
+La inserción del error se realiza mediante operaciones XOR. Cuando la señal de error correspondiente es `0`, el bit original se conserva; cuando es `1`, el bit se invierte.
+
+La palabra de salida mantiene el mismo orden de bits de la palabra de entrada. Los siete bits correspondientes al código Hamming pueden ser modificados, mientras que el bit de paridad global `P` se conserva directamente:
+
+```text
+palabra_error_po[7] = palabra_codificada_pi[7]
+```
+
+De esta manera, el generador permite introducir hasta dos errores en las posiciones seleccionadas del código Hamming sin modificar la paridad global.
+
 
 #### 5. Testbench
-
-</details>
-
-
-<details>
-<summary><strong>Testbench del transmisor</strong></summary>
-
 </details>
 
 </details>
-
 
 <details>
 <summary><strong>5.2 Subsistema 2 — Receptor</strong></summary>
