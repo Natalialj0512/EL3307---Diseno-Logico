@@ -479,46 +479,551 @@ De esta manera, el generador permite introducir hasta dos errores en las posicio
 <details>
 <summary><strong>5.3 Ejercicio 2 — Oscilador en anillo</strong></summary>
 
+El objetivo de este ejercicio es ver experimentalmente los parámetros
+de temporización de compuertas lógicas, en este caso el tiempo de retardo de
+propagación $t_{PD}$ y los tiempos de subida y caída $t_{rise}$ y $t_{fall}$.
+
+Para esto se construyó un oscilador en anillo utilizando inversores de un
+74HC04 (NOT). El período de oscilación permite relacionar la frecuencia del anillo
+con el tiempo de propagación promedio de cada inversor.
+
+El procedimiento experimental se dividió en cuatro configuraciones:
+
+1. Oscilador con cinco inversores.
+2. Oscilador con tres inversores.
+3. Oscilador con tres inversores y aproximadamente 1 m de cable.
+4. Un solo inversor con entrada y salida conectadas.
+
+---
+
 <details>
-<summary><strong>Diseño del oscilador</strong></summary>
+<summary><strong>5.3.1 Oscilador con cinco inversores</strong></summary>
 
-#### 1. Encabezado
+### Montaje
 
-#### 2. Parámetros
+Se construyó un oscilador en anillo utilizando cinco inversores del 74HC04.
+Las cinco compuertas se conectaron en cascada y la salida del último inversor
+se realimentó hacia la entrada del primero.
 
-#### 3. Conexiones
+El anillo queda representado de forma general como:
 
-#### 4. Criterios de diseño
+$$
+N=5
+$$
 
-#### 5. Procedimiento
+y su condición de oscilación se debe a que la señal atraviesa un número impar
+de inversores antes de regresar al punto inicial.
 
-#### 6. Resultados
+### Medición experimental
 
-#### 7. Análisis
+La señal fue observada mediante dos canales del osciloscopio, utilizando
+el canal 1 en la entrada de un inversor y el canal 2 en su salida.
+
+La forma de onda obtenida se muestra a continuación:
+
+![Oscilador en anillo con cinco inversores](doc/images/DS0001A1.PNG)
+
+### Resultados
+
+A partir de la medición guardada directamente desde el osciloscopio se
+obtuvieron los siguientes valores:
+
+| Parámetro | Resultado |
+|---|---:|
+| Frecuencia | $2.666\ \text{MHz}$ |
+| Período | $375.1\ \text{ns}$ |
+| $V_{max}$ | $5.12\ \text{V}$ |
+| $V_{pp}$ | $5.12\ \text{V}$ |
+| $t_{rise}$ | $100.8\ \text{ns}$ |
+| $t_{fall}$ | $100.8\ \text{ns}$ |
+
+### Cálculo del período
+
+A partir de la frecuencia medida:
+
+$$
+T=\frac{1}{f}
+$$
+
+$$
+T=\frac{1}{2.666\times10^6}
+$$
+
+$$
+\boxed{T\approx375.1\ \text{ns}}
+$$
+
+### Cálculo del tiempo de propagación
+
+Para un oscilador de anillo compuesto por $N$ inversores, el período está
+relacionado con el tiempo de propagación promedio mediante:
+
+$$
+T=2Nt_{PD}
+$$
+
+Por lo tanto:
+
+$$
+t_{PD}=\frac{T}{2N}
+$$
+
+Para cinco inversores:
+
+$$
+t_{PD}=\frac{375.1\ \text{ns}}{2(5)}
+$$
+
+$$
+\boxed{t_{PD}\approx37.5\ \text{ns}}
+$$
+
+### Análisis
+
+La señal obtenida presenta una oscilación periódica y una excursión de
+aproximadamente 5 V. A partir de la frecuencia medida se obtuvo un período
+de aproximadamente $375.1\ \text{ns}$.
+
+Utilizando este período y considerando cinco inversores, se obtuvo un tiempo
+de propagación promedio de aproximadamente $37.5\ \text{ns}$ por inversor.
+
+Los tiempos de subida y caída medidos fueron prácticamente iguales:
+
+$$
+t_{rise}=100.8\ \text{ns}
+$$
+
+$$
+t_{fall}=100.8\ \text{ns}
+$$
+
+Esto indica que, bajo las condiciones de esta medición, no se observó una
+diferencia apreciable entre ambos tiempos de transición.
+
+Este valor de $t_{PD}$ se utilizará posteriormente para estimar el período
+teórico del oscilador cuando se reduzca el número de inversores a tres.
 
 </details>
 
 
 <details>
-<summary><strong>Mediciones</strong></summary>
+<summary><strong>5.3.2 Oscilador con tres inversores</strong></summary>
 
-#### 1. Procedimiento de medición
+### Montaje
 
-#### 2. Resultados experimentales
+Se modificó el circuito anterior para utilizar únicamente tres inversores,
+manteniendo la realimentación necesaria para formar el oscilador en anillo.
 
-#### 3. Cálculos
+En este caso:
+
+$$
+N=3
+$$
+
+La forma de onda obtenida experimentalmente se muestra a continuación:
+
+![Oscilador en anillo con tres inversores](doc/images/DS0001A2.PNG)
+
+### Resultados experimentales
+
+| Parámetro | Resultado |
+|---|---:|
+| Frecuencia | $2.648\ \text{MHz}$ |
+| Período medido | $377.6\ \text{ns}$ |
+| $t_{rise}$ | $105.8\ \text{ns}$ |
+| $t_{fall}$ | $98.8\ \text{ns}$ |
+| $V_{max}$ | $\approx4.8\ \text{V}$ |
+
+### Cálculo del período esperado
+
+Se utilizó el tiempo de propagación obtenido anteriormente:
+
+$$
+t_{PD}\approx37.5\ \text{ns}
+$$
+
+Para tres inversores:
+
+$$
+T_{teórico}=2Nt_{PD}
+$$
+
+$$
+T_{teórico}=2(3)(37.5\ \text{ns})
+$$
+
+$$
+\boxed{T_{teórico}\approx225.0\ \text{ns}}
+$$
+
+La frecuencia teórica correspondiente sería:
+
+$$
+f_{teórica}=\frac{1}{T_{teórico}}
+$$
+
+$$
+f_{teórica}=
+\frac{1}{225.0\times10^{-9}}
+$$
+
+$$
+\boxed{f_{teórica}\approx4.44\ \text{MHz}}
+$$
+
+### Período experimental
+
+A partir de la frecuencia medida:
+
+$$
+T_{medido}=\frac{1}{2.648\times10^6}
+$$
+
+$$
+\boxed{T_{medido}\approx377.6\ \text{ns}}
+$$
+
+### Comparación
+
+Los valores obtenidos fueron:
+
+| Magnitud | Teórico | Experimental |
+|---|---:|---:|
+| Período | $225.0\ \text{ns}$ | $377.6\ \text{ns}$ |
+| Frecuencia | $4.44\ \text{MHz}$ | $2.648\ \text{MHz}$ |
+
+El período experimental fue aproximadamente un $68\%$ mayor que el valor
+teórico calculado a partir del $t_{PD}$ obtenido con cinco inversores.
+
+### Análisis
+
+Al reducir el número de inversores de cinco a tres, el modelo ideal predice
+una reducción del período de oscilación. Esto se debe a que la expresión
+
+$$
+T=2Nt_{PD}
+$$
+
+indica una dependencia directa entre el período y el número de etapas del
+anillo.
+
+Sin embargo, experimentalmente no se obtuvo el período esperado. El valor
+medido fue aproximadamente $377.6\ \text{ns}$, mientras que el modelo
+predecía aproximadamente $225.0\ \text{ns}$.
+
+Por lo tanto, **el resultado experimental no coincide con el cálculo ideal**.
+
+La diferencia puede estar asociada a que el modelo utilizado supone un
+tiempo de propagación equivalente para las diferentes configuraciones,
+mientras que en el montaje real existen efectos adicionales asociados al
+alambrado, las conexiones de la protoboard, la carga de las sondas del
+osciloscopio y las condiciones eléctricas de cada etapa. Además, el
+$t_{PD}$ obtenido con cinco inversores representa un promedio del
+comportamiento del circuito en esa configuración y no necesariamente un
+valor constante e independiente de las condiciones de operación.
+
+Por esta razón, el cálculo debe interpretarse como una predicción ideal del
+comportamiento del anillo y no como una garantía de que el período
+experimental coincida exactamente con dicho valor.
 
 </details>
 
 
 <details>
-<summary><strong>Análisis de resultados</strong></summary>
+<summary><strong>5.3.3 Tres inversores con aproximadamente 1 m de cable</strong></summary>
+
+### Montaje
+
+A partir del oscilador de tres inversores se incorporó aproximadamente
+1 metro de cable en la trayectoria de realimentación del anillo.
+
+La conexión de realimentación pasó de:
+
+$$
+\text{pin 6}\rightarrow\text{pin 1}
+$$
+
+a realizarse mediante el tramo adicional de cable de aproximadamente 1 m.
+
+La finalidad de esta modificación fue observar experimentalmente cómo una
+mayor longitud de interconexión afecta la señal.
+
+La forma de onda obtenida se muestra a continuación:
+
+![Oscilador de anillo con tres inversores y 1 m de cable](doc/images/DS0001A3.PNG)
+
+### Resultados experimentales
+
+| Parámetro | 3 inversores | 3 inversores + 1 m |
+|---|---:|---:|
+| Frecuencia | $2.648\ \text{MHz}$ | $2.778\ \text{MHz}$ |
+| Período | $377.6\ \text{ns}$ | $360.0\ \text{ns}$ |
+| $t_{rise}$ | $105.8\ \text{ns}$ | $78\ \text{ns}$ |
+| $t_{fall}$ | $98.8\ \text{ns}$ | $75\ \text{ns}$ |
+| $V_{max}$ | $\approx4.8\ \text{V}$ | $\approx4.96\ \text{V}$ |
+
+### Cálculo del período con el cable
+
+A partir de la frecuencia medida:
+
+$$
+T_{cable}=\frac{1}{2.778\times10^6}
+$$
+
+$$
+\boxed{T_{cable}\approx360.0\ \text{ns}}
+$$
+
+### Comparación de la señal
+
+Al agregar el metro de cable se observaron los siguientes cambios:
+
+- La frecuencia aumentó de $2.648\ \text{MHz}$ a $2.778\ \text{MHz}$.
+- El período disminuyó de $377.6\ \text{ns}$ a aproximadamente $360.0\ \text{ns}$.
+- El tiempo de subida disminuyó de $105.8\ \text{ns}$ a $78\ \text{ns}$.
+- El tiempo de caída disminuyó de $98.8\ \text{ns}$ a $75\ \text{ns}$.
+
+El cambio porcentual aproximado de la frecuencia fue:
+
+$$
+\frac{2.778-2.648}{2.648}\times100
+\approx4.9\%
+$$
+
+Por lo tanto:
+
+$$
+\boxed{\Delta f\approx+4.9\%}
+$$
+
+El cambio relativo del período fue aproximadamente:
+
+$$
+\frac{360.0-377.6}{377.6}\times100
+\approx-4.7\%
+$$
+
+Por lo tanto:
+
+$$
+\boxed{\Delta T\approx-4.7\%}
+$$
+
+### Análisis
+
+La incorporación del cable de aproximadamente 1 m produjo un cambio
+observable en las características temporales de la señal. En particular,
+se observó un aumento de la frecuencia y una disminución del período.
+
+También se observó una reducción de los tiempos de subida y caída medidos
+por el osciloscopio.
+
+Es importante señalar que el resultado experimental **no mostró un
+aumento del período al agregar el cable**. Por el contrario, bajo las
+condiciones de esta medición, el período disminuyó de aproximadamente
+$377.6\ \text{ns}$ a $360.0\ \text{ns}$.
+
+La longitud adicional del conductor modifica las condiciones eléctricas de
+la interconexión, introduciendo elementos parásitos asociados al propio
+conductor y a sus conexiones. Estos efectos pueden modificar la forma de
+onda y la temporización observada.
+
+Sin embargo, a partir de las mediciones realizadas no es posible atribuir
+el cambio exclusivamente a un único efecto físico. La medición también
+depende de las condiciones de montaje, la posición de las sondas, las
+conexiones de la protoboard y la interacción entre el cable y el resto del
+circuito.
+
+Por lo tanto, el resultado experimental permite concluir que **la longitud
+adicional del alambrado sí modificó la señal**, aunque el sentido y magnitud
+del cambio deben interpretarse para las condiciones particulares del
+montaje realizado.
 
 </details>
 
 
 <details>
-<summary><strong>Conclusiones</strong></summary>
+<summary><strong>5.3.4 Un solo inversor con entrada y salida conectadas</strong></summary>
+
+### Montaje
+
+Finalmente se utilizó un único inversor del 74HC04, conectando directamente
+su salida con su entrada.
+
+El circuito queda representado como:
+
+$$
+\text{entrada}\rightarrow\text{NOT}\rightarrow\text{salida}
+$$
+
+con:
+
+$$
+\text{entrada}=\text{salida}
+$$
+
+Por lo tanto, el mismo nodo se encuentra conectado simultáneamente a la
+entrada y a la salida del inversor.
+
+### Forma de onda obtenida
+
+![Un inversor con entrada y salida conectadas](doc/images/DS0001A4.PNG)
+
+### Resultado experimental
+
+La señal observada dejó de presentar una oscilación periódica y se
+estableció alrededor de una tensión intermedia.
+
+De la medición se obtuvieron aproximadamente:
+
+$$
+V_{max}\approx2.68\ \text{V}
+$$
+
+$$
+V_{min}\approx2.50\ \text{V}
+$$
+
+Por lo tanto:
+
+$$
+V_{pp}=V_{max}-V_{min}
+$$
+
+$$
+V_{pp}\approx2.68-2.50
+$$
+
+$$
+\boxed{V_{pp}\approx0.18\ \text{V}}
+$$
+
+El valor medio aproximado del nodo es:
+
+$$
+V_{nodo}\approx\frac{V_{max}+V_{min}}{2}
+$$
+
+$$
+V_{nodo}\approx\frac{2.68+2.50}{2}
+$$
+
+$$
+\boxed{V_{nodo}\approx2.59\ \text{V}}
+$$
+
+Por lo tanto, se puede considerar experimentalmente:
+
+$$
+\boxed{V_{nodo}\approx2.6\ \text{V}}
+$$
+
+### Análisis
+
+A diferencia de las configuraciones anteriores, el circuito con un único
+inversor realimentado no presentó una oscilación. La entrada y la salida
+están conectadas al mismo nodo, por lo que el inversor recibe como entrada
+la misma tensión que intenta producir en su salida.
+
+El sistema no puede establecerse simplemente en $0\ \text{V}$ o $5\ \text{V}$,
+ya que cualquiera de estos estados provocaría que la acción inversora
+intentara llevar el nodo hacia el estado contrario.
+
+Como resultado, el circuito se establece alrededor de un punto de
+operación intermedio, medido experimentalmente en aproximadamente $2.6\ V$.
+
+Este comportamiento permite observar experimentalmente el punto de
+operación de un inversor bajo realimentación.
+
+En caso de que la tensión no fuera estable, el instructivo propone conectar
+un capacitor de $0.01\ \mu F$ entre este nodo y tierra para estabilizarlo.
+En la medición realizada se observó un nodo esencialmente estable, por lo
+que la medición pudo realizarse directamente.
+
+</details>
+
+
+<details>
+<summary><strong>5.3.5 Resumen y discusión general</strong></summary>
+
+Los resultados obtenidos durante las cuatro configuraciones se resumen en
+la siguiente tabla:
+
+| Configuración | Frecuencia | Período | $t_{rise}$ | $t_{fall}$ |
+|---|---:|---:|---:|---:|
+| 5 inversores | $2.666\ \text{MHz}$ | $375.1\ \text{ns}$ | $100.8\ \text{ns}$ | $100.8\ \text{ns}$ |
+| 3 inversores | $2.648\ \text{MHz}$ | $377.6\ \text{ns}$ | $105.8\ \text{ns}$ | $98.8\ \text{ns}$ |
+| 3 inversores + 1 m | $2.778\ \text{MHz}$ | $360.0\ \text{ns}$ | $78\ \text{ns}$ | $75\ \text{ns}$ |
+
+El primer experimento permitió obtener un tiempo de propagación promedio
+experimental de:
+
+$$
+\boxed{t_{PD}\approx37.5\ \text{ns}}
+$$
+
+A partir de este valor se predijo para tres inversores un período de:
+
+$$
+\boxed{T_{teórico}\approx225.0\ \text{ns}}
+$$
+
+Sin embargo, experimentalmente se obtuvo:
+
+$$
+\boxed{T_{medido}\approx377.6\ \text{ns}}
+$$
+
+por lo que el comportamiento experimental presentó una diferencia
+considerable respecto al modelo ideal utilizado.
+
+La incorporación de aproximadamente 1 m de cable produjo una modificación
+adicional de la señal. En las condiciones experimentales utilizadas, la
+frecuencia aumentó aproximadamente un $4.9\%$ y el período disminuyó
+aproximadamente un $4.7\%$. También se modificaron los tiempos de subida y
+caída.
+
+Finalmente, al conectar la entrada y salida de un único inversor, se obtuvo
+un punto de operación estable de aproximadamente:
+
+$$
+\boxed{V_{nodo}\approx2.6\ \text{V}}
+$$
+
+En conjunto, el experimento permitió observar que los parámetros de
+temporización de las compuertas no dependen únicamente de la cantidad de
+inversores considerada en un modelo ideal, sino que las condiciones reales
+de interconexión y medición también influyen sobre el comportamiento
+observado.
+
+</details>
+
+
+<details>
+<summary><strong>5.3.6 Conclusiones del experimento</strong></summary>
+
+- Se construyó y caracterizó experimentalmente un oscilador en anillo con
+  cinco inversores del 74HC04.
+
+- A partir de su frecuencia de oscilación se obtuvo un tiempo de propagación
+  promedio de aproximadamente $37.5\ \text{ns}$.
+
+- Al reducir el número de inversores a tres, el período experimental no
+  coincidió con el período calculado mediante el modelo ideal. El período
+  medido fue aproximadamente $377.6\ \text{ns}$ frente a un valor teórico
+  de $225.0\ \text{ns}$.
+
+- La incorporación de aproximadamente 1 m de cable modificó las
+  características temporales de la señal. En la configuración utilizada se
+  observó un aumento de la frecuencia y una disminución del período.
+
+- La realimentación de un único inversor produjo una tensión estable de
+  aproximadamente $2.6\ \text{V}$, correspondiente a un punto de operación
+  intermedio del inversor.
+
+- Las mediciones demostraron experimentalmente la influencia de las
+  características reales del montaje y de las interconexiones sobre el
+  comportamiento temporal de las compuertas lógicas.
 
 </details>
 
