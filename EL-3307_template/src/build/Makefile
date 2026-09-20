@@ -6,10 +6,17 @@ FAMILY = GW1N-9C
 DEVICE = GW1NR-LV9QN88PC6/I5
 
 #Nombre del proyecto... Acá ponen el nombre que deseen.
-PROYECT = prueba_7seg
+PROYECT = transmisor_receptor
 
 #Fuentes de diseno
-SOURCES := $(wildcard ../design/*.v ../design/*.sv) #Todas las fuentes .v o .sv que estan en design
+SOURCES = ../design/top.sv \
+          ../design/binario_7seg.sv \
+          ../design/generador_error.sv \
+          ../design/verificador_paridad.sv \
+          ../design/sindrome_hamming.sv \
+          ../design/correccion_error.sv \
+          ../design/despliegue_receptor.sv
+#Todas las fuentes .v o .sv que estan en design
 #Si quieren indicarlas una a una, pueden hacerlo como en este ejemplo:
 #SOURCES = ../design/module_top_deco_gray.v ../design/module_input_deco_gray.v 
 
@@ -19,7 +26,7 @@ TESTBENCH = ../sim/tb_binario_7seg.sv
 
 # Constraints para el proyecto
 #aca va el archivo de constraints del proyecto
-CONSTRAINTS = tangnano9k_constraints_template.cst
+CONSTRAINTS = ../constr/tangnano9k_constraints_template.cst
 
 #el top se indica sin la extension .v, esto hace referencia al nombre que le pusieron al módulo y no al archivo en si.
 TOP_DESIGN = top

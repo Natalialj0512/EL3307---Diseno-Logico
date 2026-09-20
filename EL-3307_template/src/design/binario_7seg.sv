@@ -1,6 +1,8 @@
 module binario_7seg (
+
     input  wire [3:0] codigo_bin_pi,
     output wire [6:0] catodo_po
+
 );
 
     wire i3;
@@ -22,6 +24,7 @@ module binario_7seg (
     assign i0 = codigo_bin_pi[0];
 
     // Segmento A
+    // 0 = encendido, 1 = apagado
     assign a =
           (i0 & i1 & i3 & ~i2) |
           (i0 & i2 & i3 & ~i1) |
@@ -67,13 +70,25 @@ module binario_7seg (
           (~i1 & ~i2 & ~i3) |
           (i2 & i3 & ~i0 & ~i1);
 
-    // Orden de los cátodos
-    assign catodo_po[6] = g;
+
+    // ========================================================
+    // ORDEN DEL BUS SEGUN EL CABLEADO REAL
+    //
+    // FPGA 76 -> A
+    // FPGA 75 -> B
+    // FPGA 74 -> F
+    // FPGA 73 -> C
+    // FPGA 72 -> E
+    // FPGA 71 -> D
+    // FPGA 70 -> G
+    // ========================================================
+
+    assign catodo_po[0] = a;
+    assign catodo_po[1] = b;
+    assign catodo_po[2] = e;
+    assign catodo_po[3] = d;
+    assign catodo_po[4] = g;
     assign catodo_po[5] = f;
-    assign catodo_po[4] = c;
-    assign catodo_po[3] = b;
-    assign catodo_po[2] = a;
-    assign catodo_po[1] = d;
-    assign catodo_po[0] = e;
+    assign catodo_po[6] = c;
 
 endmodule
