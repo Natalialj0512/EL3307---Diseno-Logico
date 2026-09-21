@@ -305,14 +305,69 @@ Por lo tanto, el testbench permitió verificar funcionalmente el módulo `binari
 <summary><strong>Módulo: Codificación Hamming (7,4)</strong></summary>
 
 #### 1. Encabezado del módulo
+El módulo de codificación Hamming (7,4) recibe una palabra de información de 4 bits de los dip switch y genera una palabra codificada de 7 bits, incorporando tres bits de paridad.
+
+La lógica de paridad se realizó mediante compuertas XOR físicas, mientras que la palabra de información es proporcionada por la FPGA.
+
+```text
+Entrada:
+i3 i2 i1 i0
+
+Salida:
+i3 i2 i1 C2 i0 C1 C0
+```
 
 #### 2. Parámetros
+Este módulo no utiliza parámetros configurables.
 
 #### 3. Entradas y salidas
+| Señal | Tipo | Ancho | Función |
+|:---|:---:|:---:|:---|
+| `codigo_bin_pi` | Entrada | 4 bits | Palabra de información ingresada mediante los conmutadores de la FPGA |
+| `c0_pi` | Entrada | 1 bit | Bit de paridad C0 generado mediante lógica XOR |
+| `c1_pi` | Entrada | 1 bit | Bit de paridad C1 generado mediante lógica XOR |
+| `c2_pi` | Entrada | 1 bit | Bit de paridad C2 generado mediante lógica XOR |
+| `palabra_codificada` | Salida | 7 bits | Palabra Hamming formada por los cuatro bits de información y los tres bits de paridad |
+
+La palabra codificada utiliza el siguiente orden:
+
+```text
+i3 i2 i1 C2 i0 C1 C0
+```
+
+La correspondencia entre las posiciones Hamming y los bits es:
+
+| Posición Hamming | Bit |
+|:---:|:---:|
+| 1 | C0 |
+| 2 | C1 |
+| 3 | i0 |
+| 4 | C2 |
+| 5 | i1 |
+| 6 | i2 |
+| 7 | i3 |
 
 #### 4. Criterios de diseño
+Los tres bits de paridad del código Hamming (7,4) se obtienen mediante operaciones XOR realizadas con compuertas lógicas físicas.
+
+La FPGA proporciona los cuatro bits de información y recibe los bits de paridad generados externamente para formar la palabra codificada.
+
+La distribución de los bits sigue la estructura establecida para el código Hamming (7,4), colocando los bits de paridad en las posiciones 1, 2 y 4.
+
+La implementación fue verificada experimentalmente mediante diferentes combinaciones de la palabra de entrada.
+
+##### Evidencia experimental
+
+<img src="doc/images/codificacion_hamming_montaje.jpeg" width="700">
+
+*Figura. Implementación física de la codificación Hamming (7,4) mediante compuertas XOR y FPGA.*
+
 
 #### 5. Testbench
+No se implementó un testbench HDL para este módulo, debido a que la generación de los bits de paridad se realizó mediante compuertas XOR físicas.
+
+La verificación del funcionamiento se realizó experimentalmente mediante el montaje físico y la observación de las señales generadas para diferentes palabras de entrada, utilizando un top_temporal.sv que mostrara en el display de 7 segmentos en vez de los 4 datos, los valores C0, C1, C2 y la paridad global del módulo de inserción de paridad DED. 
+
 
 </details>
 
@@ -321,14 +376,51 @@ Por lo tanto, el testbench permitió verificar funcionalmente el módulo `binari
 <summary><strong>Módulo: Inserción de paridad para DED</strong></summary>
 
 #### 1. Encabezado del módulo
+El módulo de inserción de paridad para DED incorpora un bit de paridad global `P` a la palabra Hamming de 7 bits.
+
+La paridad global se obtiene mediante compuertas XOR físicas y permite complementar el código Hamming para diferenciar entre condiciones de un error y dos errores en el receptor.
+
+La palabra transmitida queda formada por 8 bits:
+
+```text
+P i3 i2 i1 C2 i0 C1 C0
+```
 
 #### 2. Parámetros
+Este módulo no utiliza parámetros configurables.
 
 #### 3. Entradas y salidas
+| Señal | Tipo | Ancho | Función |
+|:---|:---:|:---:|:---|
+| `palabra_codificada` | Entrada | 7 bits | Palabra Hamming formada por los bits de información y paridad |
+| `p_pi` | Entrada | 1 bit | Bit de paridad global generado mediante lógica XOR |
+| `palabra_transmitida` | Salida | 8 bits | Palabra Hamming con el bit de paridad global para DED |
+
+El orden de transmisión utilizado es:
+
+```text
+P i3 i2 i1 C2 i0 C1 C0
+```
+
+El bit `P` corresponde a la paridad global de los siete bits del código Hamming.
 
 #### 4. Criterios de diseño
+El bit de paridad global se obtiene mediante una combinación de compuertas XOR aplicada a los siete bits de la palabra Hamming.
+
+Este bit permite complementar la detección de errores del código Hamming y diferenciar las condiciones de error requeridas por el esquema SEC/DED.
+
+La generación de la paridad se implementó mediante lógica combinacional física y posteriormente se integró con la palabra Hamming para formar la palabra de 8 bits que se comunica entre las FPGA.
+
+##### Evidencia experimental
+
+<img src="doc/images/codificacion_hamming_montaje.jpeg" width="700">
+
+*Figura. Implementación física de la generación de paridad global para DED.*
 
 #### 5. Testbench
+No se implementó un testbench HDL para este módulo, debido a que la generación de la paridad global se realizó mediante compuertas XOR físicas.
+
+La verificación se realizó experimentalmente mediante el montaje físico y la medición de las señales obtenidas para diferentes palabras Hamming, utilizando un top_temporal.sv que mostrara en el display de 7 segmentos en vez de los 4 datos, los valores C0, C1, C2 y la paridad global del módulo de inserción de paridad DED. 
 
 </details>
 
