@@ -489,9 +489,42 @@ De esta manera, el generador permite introducir hasta dos errores en las posicio
 
 
 #### 5. Testbench
+El testbench `tb_generador_error` se desarrolló para verificar la correcta inserción de uno o dos errores en las posiciones seleccionadas del código Hamming.
+
+Se utilizaron diferentes combinaciones de las entradas `error_pos1_pi` y `error_pos2_pi`, manteniendo como palabra de entrada `10101010`. Se probaron los casos sin error, un error en diferentes posiciones, dos errores en posiciones diferentes y el caso en que ambas posiciones de error son iguales.
+
+##### Resultados de la simulación
+
+| Prueba | `Error 1` | `Error 2` | Entrada | Salida | Resultado |
+|:---|:---:|:---:|:---:|:---:|:---|
+| Sin errores | `000` | `000` | `10101010` | `10101010` | Correcto |
+| Error en posición 1 | `001` | `000` | `10101010` | `10101011` | Correcto |
+| Error en posición 3 | `011` | `000` | `10101010` | `10101110` | Correcto |
+| Error en posición 7 | `111` | `000` | `10101010` | `11101010` | Correcto |
+| Errores en posiciones 2 y 5 | `010` | `101` | `10101010` | `10111000` | Correcto |
+| Errores en posiciones 3 y 7 | `011` | `111` | `10101010` | `11101110` | Correcto |
+| Ambos errores en posición 3 | `011` | `011` | `10101010` | `10101010` | Correcto |
+
+Las formas de onda obtenidas en GTKWave permitieron observar la correspondencia entre las posiciones seleccionadas mediante `error_pos1_pi` y `error_pos2_pi` y las señales internas de selección de error.
+
+<img src="doc/images/tb_generador_error.jpeg" width="800">
+
+*Figura. Simulación RTL del testbench del generador de error.*
+
+##### Resultado del testbench
+
+Las pruebas realizadas verificaron que el módulo modifica únicamente las posiciones Hamming seleccionadas mediante las entradas de posición.
+
+Cuando ambas posiciones seleccionadas son iguales, los dos cambios se cancelan debido a la operación XOR, por lo que la palabra de salida permanece igual a la palabra de entrada.
+
+Por lo tanto, el testbench permitió verificar correctamente la inserción de cero, uno y dos errores en la palabra codificada.
 </details>
 
 </details>
+
+
+
+
 
 <details>
 <summary><strong>5.2 Subsistema 2 — Receptor</strong></summary>
@@ -500,14 +533,54 @@ De esta manera, el generador permite introducir hasta dos errores en las posicio
 <summary><strong>Módulo: Verificación de paridad</strong></summary>
 
 #### 1. Encabezado del módulo
+```SystemVerilog
+module verificador_paridad (
+    input  wire [7:0] palabra_pi,
+    output wire       error_paridad_po
+);
+```
 
 #### 2. Parámetros
+Este módulo no utiliza parámetros configurables.
 
 #### 3. Entradas y salidas
+| Señal | Tipo | Ancho | Función |
+|:---|:---:|:---:|:---|
+| `palabra_pi` | Entrada | 8 bits | Palabra recibida, incluyendo los siete bits Hamming y el bit de paridad global |
+| `error_paridad_po` | Salida | 1 bit | Indica el resultado de la verificación de paridad |
 
 #### 4. Criterios de diseño
+El módulo verifica la paridad de los ocho bits de la palabra recibida mediante una operación XOR entre todos sus bits.
+
+La salida `error_paridad_po` permite determinar si la paridad de la palabra recibida es correcta o si existe una condición de paridad impar.
+
+Esta señal se utiliza posteriormente junto con el síndrome Hamming para determinar si existe un error corregible o una condición de doble error.
 
 #### 5. Testbench
+El testbench `tb_verificador_paridad` se desarrolló para comprobar el funcionamiento del detector de paridad sobre palabras de 8 bits.
+
+Se probaron diferentes palabras de entrada, incluyendo palabras con una cantidad par e impar de bits en estado lógico `1`. Para cada caso se verificó que la salida `error_paridad_po` indicara correctamente la condición de paridad.
+
+##### Resultados de la simulación
+
+| Prueba | Entrada `palabra_pi` | `error_paridad_po` | Resultado |
+|:---:|:---:|:---:|:---|
+| 1 | `00000000` | `0` | PASS |
+| 2 | `00000001` | `1` | PASS |
+| 3 | `00000011` | `0` | PASS |
+| 4 | `10101010` | `0` | PASS |
+| 5 | `00000111` | `1` | PASS |
+| 6 | `11111111` | `0` | PASS |
+
+Los resultados muestran que el módulo identifica correctamente las palabras con paridad par e impar.
+
+<img src="docs/images/tb_verificador_paridad.jpeg" width="800">
+
+*Figura. Simulación RTL del testbench del verificador de paridad.*
+
+##### Resultado del testbench
+
+Todas las pruebas realizadas fueron aprobadas. La salida `error_paridad_po` respondió correctamente para las diferentes combinaciones de entrada, verificando el funcionamiento de la comprobación de paridad de los ocho bits de la palabra recibida.
 
 </details>
 
@@ -516,14 +589,78 @@ De esta manera, el generador permite introducir hasta dos errores en las posicio
 <summary><strong>Módulo: Determinación del síndrome Hamming</strong></summary>
 
 #### 1. Encabezado del módulo
+```SystemVerilog
+module sindrome_hamming (
+    input  wire [6:0] palabra_pi,
+    output wire [2:0] sindrome_po
+);
+```
 
 #### 2. Parámetros
+Este módulo no utiliza parámetros configurables.
 
 #### 3. Entradas y salidas
+| Señal | Tipo | Ancho | Función |
+|:---|:---:|:---:|:---|
+| `palabra_pi` | Entrada | 7 bits | Siete bits recibidos correspondientes al código Hamming |
+| `sindrome_po` | Salida | 3 bits | Indica la posición del posible error dentro de la palabra Hamming |
+
+La entrada corresponde únicamente a los siete bits del código Hamming:
+
+```text
+i3 i2 i1 C2 i0 C1 C0
+```
+
+El bit de paridad global `P` no se utiliza para calcular el síndrome.
 
 #### 4. Criterios de diseño
+El síndrome Hamming se obtiene mediante tres operaciones XOR independientes.
+
+Cada bit del síndrome verifica un conjunto específico de posiciones del código Hamming:
+
+| Bit del síndrome | Posiciones verificadas |
+|:---:|:---|
+| `sindrome_po[0]` | C0, i0, i1, i3 |
+| `sindrome_po[1]` | C1, i0, i2, i3 |
+| `sindrome_po[2]` | C2, i1, i2, i3 |
+
+El valor obtenido en el síndrome representa, en binario, la posición del posible error dentro de las siete posiciones del código Hamming.
+
+Un síndrome `000` indica que no se detecta un error en los siete bits Hamming.
+
+Los valores `001` a `111` corresponden a las posiciones Hamming 1 a 7, respectivamente.
+
 
 #### 5. Testbench
+El testbench `tb_sindrome_hamming` se desarrolló para verificar que el módulo determine correctamente la posición de un posible error dentro de los siete bits del código Hamming (7,4).
+
+Se realizaron pruebas sin error y con un error individual en cada una de las siete posiciones posibles. Además, se incluyó una prueba con una palabra general para comprobar el comportamiento del módulo.
+
+##### Resultados de la simulación
+
+| Prueba | Entrada `palabra_pi` | Síndrome esperado | Síndrome obtenido | Resultado |
+|:---|:---:|:---:|:---:|:---|
+| Sin error | `0000000` | `000` | `000` | Correcto |
+| Error en bit 1 | `0000001` | `001` | `001` | Correcto |
+| Error en bit 2 | `0000010` | `010` | `010` | Correcto |
+| Error en bit 3 | `0000100` | `011` | `011` | Correcto |
+| Error en bit 4 | `0001000` | `100` | `100` | Correcto |
+| Error en bit 5 | `0010000` | `101` | `101` | Correcto |
+| Error en bit 6 | `0100000` | `110` | `110` | Correcto |
+| Error en bit 7 | `1000000` | `111` | `111` | Correcto |
+| Caso general | `1010101` | `000` | `000` | Correcto |
+
+Las formas de onda de GTKWave muestran que el síndrome cambia de acuerdo con la posición del bit que presenta el error.
+
+<img src="doc/images/tb_sindrome_hamming.jpeg" width="800">
+
+*Figura. Simulación RTL del testbench del determinador de síndrome Hamming.*
+
+##### Resultado del testbench
+
+Las pruebas verificaron las siete posiciones posibles de error del código Hamming. En cada caso, el síndrome obtenido correspondió correctamente con la posición del bit alterado.
+
+La prueba sin error y el caso general también produjeron un síndrome `000`, por lo que el módulo presentó el comportamiento esperado para las entradas evaluadas.
 
 </details>
 
@@ -532,14 +669,94 @@ De esta manera, el generador permite introducir hasta dos errores en las posicio
 <summary><strong>Módulo: Corrección de error</strong></summary>
 
 #### 1. Encabezado del módulo
+```SystemVerilog
+module correccion_error (
+    input  wire [6:0] palabra_rx,
+    input  wire       paridad_mal,
+    input  wire [2:0] sindrome,
+    output wire [3:0] datos_corregidos,
+    output wire       DED
+);
+```
 
 #### 2. Parámetros
+Este módulo no utiliza parámetros configurables.
 
 #### 3. Entradas y salidas
+| Señal | Tipo | Ancho | Función |
+|:---|:---:|:---:|:---|
+| `palabra_rx` | Entrada | 7 bits | Palabra Hamming recibida, sin incluir la paridad global |
+| `paridad_mal` | Entrada | 1 bit | Indica el resultado de la verificación de paridad global |
+| `sindrome` | Entrada | 3 bits | Indica la posición del posible error |
+| `datos_corregidos` | Salida | 4 bits | Palabra de información corregida |
+| `DED` | Salida | 1 bit | Indica la detección de una condición de doble error |
 
 #### 4. Criterios de diseño
+El módulo utiliza conjuntamente el resultado de la verificación de paridad y el síndrome Hamming para determinar la condición de error de la palabra recibida.
+
+Primero se determina si el síndrome es diferente de `000`. A partir de esta condición y del resultado de la verificación de paridad se identifican los casos de error.
+
+Para un error simple corregible (SEC), se utiliza una paridad incorrecta junto con un síndrome diferente de `000`:
+
+```text
+paridad_mal = 1
+sindrome ≠ 000
+```
+
+En esta condición, el síndrome indica la posición del bit que debe invertirse.
+
+Para la detección de doble error (DED), se utiliza una paridad correcta junto con un síndrome diferente de `000`:
+
+```text
+paridad_mal = 0
+sindrome ≠ 000
+```
+
+La corrección se realiza mediante operaciones XOR sobre los siete bits recibidos. Solamente se invierte el bit correspondiente a la posición indicada por el síndrome.
+
+Finalmente, se extraen los cuatro bits de información de la palabra Hamming corregida:
+
+```text
+i3 i2 i1 i0
+```
 
 #### 5. Testbench
+El testbench `tb_correccion_error` se desarrolló para verificar la corrección de errores simples y la detección de doble error mediante la combinación de la paridad global y el síndrome Hamming.
+
+Se realizaron pruebas sin error, con un error individual en cada una de las siete posiciones Hamming, con dos errores y con un error únicamente en el bit de paridad global.
+
+##### Resultados de la simulación
+
+| Prueba | `Palabra RX` | `Paridad mal` | `Síndrome` | `Datos correg.` | `DED` |
+|:---|:---:|:---:|:---:|:---:|:---:|
+| Sin error | `1010101` | `0` | `000` | `1011` | `0` |
+| Error en posición 1 | `1010100` | `1` | `001` | `1011` | `0` |
+| Error en posición 2 | `1010111` | `1` | `010` | `1011` | `0` |
+| Error en posición 3 | `1010001` | `1` | `011` | `1011` | `0` |
+| Error en posición 4 | `1011101` | `1` | `100` | `1011` | `0` |
+| Error en posición 5 | `1000101` | `1` | `101` | `1011` | `0` |
+| Error en posición 6 | `1110101` | `1` | `110` | `1011` | `0` |
+| Error en posición 7 | `0010101` | `1` | `111` | `1011` | `0` |
+| Doble error | `1100101` | `0` | `011` | `1101` | `1` |
+| Error en paridad global | `1010101` | `1` | `000` | `1011` | `0` |
+
+Para las pruebas con un solo error, el síndrome indicó correctamente la posición afectada y los datos corregidos se recuperaron como `1011`.
+
+En la prueba de doble error, la combinación de `paridad_mal = 0` y un síndrome diferente de `000` permitió activar la salida `DED`.
+
+La prueba de error únicamente en la paridad global produjo un síndrome `000`, por lo que los cuatro bits de información permanecieron como `1011`.
+
+<img src="doc/images/tb_correccion_error.jpeg" width="800">
+
+*Figura. Simulación RTL del testbench del módulo de corrección de error.*
+
+##### Resultado del testbench
+
+El testbench verificó correctamente los casos de ausencia de error, error simple en cada una de las siete posiciones Hamming, doble error y error en la paridad global.
+
+Para los errores simples, el módulo identificó la posición mediante el síndrome y recuperó correctamente la palabra de información `1011`.
+
+En el caso de doble error, se activó la salida `DED`, indicando que la condición detectada no debía ser corregida como un error simple.
 
 </details>
 
@@ -548,22 +765,104 @@ De esta manera, el generador permite introducir hasta dos errores en las posicio
 <summary><strong>Módulo: Despliegue de la palabra corregida</strong></summary>
 
 #### 1. Encabezado del módulo
+```SystemVerilog
+module despliegue_receptor (
+    input  wire [3:0] palabra_pi,
+    input  wire [2:0] sindrome_pi,
+    input  wire       doble_error_pi,
+    input  wire       display_pi,
+    output wire [3:0] codigo_bin_led_po,
+    output wire [6:0] catodo_po,
+    output wire [1:0] anodo_po
+);
+```
 
 #### 2. Parámetros
+Este módulo no utiliza parámetros configurables.
 
 #### 3. Entradas y salidas
+| Señal | Tipo | Ancho | Función |
+|:---|:---:|:---:|:---|
+| `palabra_pi` | Entrada | 4 bits | Palabra de información recibida o corregida |
+| `sindrome_pi` | Entrada | 3 bits | Síndrome correspondiente a la posición del error |
+| `doble_error_pi` | Entrada | 1 bit | Indica la detección de doble error |
+| `display_pi` | Entrada | 1 bit | Selecciona si se muestra la palabra o el síndrome |
+| `codigo_bin_led_po` | Salida | 4 bits | Control de los LEDs que representan la palabra |
+| `catodo_po` | Salida | 7 bits | Control de los segmentos del display de 7 segmentos |
+| `anodo_po` | Salida | 2 bits | Selección del display utilizado |
+
+El selector `display_pi` funciona de la siguiente manera:
+
+| `display_pi` | Información mostrada |
+|:---:|:---|
+| `0` | Palabra de 4 bits |
+| `1` | Síndrome de 3 bits |
+
+Cuando `doble_error_pi = 1`, el display muestra la letra hexadecimal `E` como indicación de doble error.
+
 
 #### 4. Criterios de diseño
+El módulo permite visualizar la información obtenida durante el proceso de recepción.
+
+Los cuatro LEDs muestran siempre la palabra de información recibida mediante `codigo_bin_led_po`. El selector `display_pi` no modifica la información mostrada en los LEDs.
+
+El display de 7 segmentos puede utilizarse para mostrar dos tipos de información:
+
+- La palabra de 4 bits recibida o corregida.
+- El síndrome Hamming correspondiente a la posición del error.
+
+La selección se realiza mediante `display_pi`.
+
+Cuando se detecta una condición de doble error, la entrada `doble_error_pi` tiene prioridad y el valor mostrado en el display corresponde a:
+
+```text
+1110 = E
+```
+
+La lógica de los siete segmentos se implementa mediante expresiones booleanas. Debido al uso de un display de ánodo común, las señales de los segmentos se invierten para generar las señales de control correspondientes.
+
+La selección de los dos displays se realiza mediante las señales `anodo_po`.
 
 #### 5. Testbench
+El testbench `tb_despliegue_receptor` se desarrolló para verificar las diferentes funciones de visualización del receptor.
+
+Se comprobaron la visualización de palabras de 4 bits en hexadecimal, la visualización del síndrome Hamming, la indicación de doble error y el funcionamiento independiente de los LEDs respecto al selector `display_pi`.
+
+##### Resultados de la simulación
+
+| Prueba | Palabra | Síndrome | DED | Display | LEDs | Cátodos | Ánodos |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Palabra 0 | `0000` | `000` | `0` | `0` | `0000` | `0010000` | `10` |
+| Palabra 5 | `0101` | `000` | `0` | `0` | `0101` | `0000110` | `10` |
+| Palabra A | `1010` | `000` | `0` | `0` | `1010` | `0001000` | `10` |
+| Palabra F | `1111` | `000` | `0` | `0` | `1111` | `1001010` | `10` |
+| Síndrome 1 | `1010` | `001` | `0` | `1` | `1010` | `0111101` | `01` |
+| Síndrome 3 | `0101` | `011` | `0` | `1` | `0101` | `0100100` | `01` |
+| Síndrome 7 | `0011` | `111` | `0` | `1` | `0011` | `0111100` | `01` |
+| Doble error | `1010` | `011` | `1` | `0` | `1010` | `1000010` | `10` |
+
+Además, se verificó que los LEDs mostraran la palabra de entrada independientemente del valor de `display_pi`:
+
+| Palabra | `display_pi` | LEDs |
+|:---:|:---:|:---:|
+| `1100` | `0` | `1100` |
+| `1100` | `1` | `1100` |
+
+Las formas de onda obtenidas mediante GTKWave permitieron observar los cambios en `palabra_pi`, `sindrome_pi`, `doble_error_pi` y `display_pi`, así como las respuestas correspondientes en los LEDs, cátodos y ánodos.
+
+<img src="doc/images/tb_despliegue_receptor.jpeg" width="800">
+
+*Figura. Simulación RTL del testbench del módulo de despliegue del receptor.*
+
+##### Resultado del testbench
+
+Las pruebas permitieron verificar las diferentes funciones de visualización del receptor.
+
+Se comprobó la representación de palabras en hexadecimal, la visualización del síndrome seleccionado, la indicación de doble error y el funcionamiento independiente de los cuatro LEDs respecto al selector `display_pi`.
 
 </details>
 
 
-<details>
-<summary><strong>Testbench del receptor</strong></summary>
-
-</details>
 
 </details>
 
@@ -1166,9 +1465,38 @@ conectadas produjo una tensión estable de aproximadamente:
 
 ---
 
-## 6. Consumo de recursos
+## 6. Problemas encontrados durante el proyecto
+### 6.1 Falla de un pin de la FPGA durante las pruebas del transmisor
 
-## 7. Problemas encontrados durante el proyecto
+Durante las pruebas del transmisor se presentó un problema con uno de los pines de la FPGA utilizados para recibir las señales provenientes de las compuertas XOR.
+
+Para verificar el funcionamiento de los bits de paridad generados externamente, se implementó temporalmente un `top` de prueba que permitía visualizar directamente en el display de 7 segmentos las señales correspondientes a `C0`, `C1`, `C2` y `P`, en lugar de mostrar la palabra de 4 bits ingresada mediante los conmutadores.
+
+Esta prueba era necesaria para verificar individualmente las señales generadas por las compuertas XOR, ya que no era posible realizar la comprobación utilizando otro grupo.
+
+Durante las pruebas, uno de los bits siempre era interpretado como `0`, a pesar de que se esperaba que cambiara de acuerdo con la señal proveniente de la compuerta XOR. Esto llevó a realizar diferentes modificaciones y comprobaciones en el código para descartar que el problema estuviera relacionado con la implementación del diseño.
+
+La revisión incluyó cambios en el código y diferentes pruebas de las conexiones. Después de varias horas de depuración, se utilizó un multímetro para comprobar directamente el comportamiento eléctrico del pin. Se determinó que el pin no presentaba continuidad eléctrica y permanecía en aproximadamente `0 V`, independientemente de la señal aplicada.
+
+Por lo tanto, se concluyó que el problema correspondía a una falla física del pin de la FPGA y no al código implementado.
+
+Este problema ocasionó una pérdida considerable de tiempo durante las pruebas, ya que inicialmente se dedicó una jornada completa a descartar posibles errores de programación y conexión antes de identificar la falla física.
+
+### 6.2 Falla de un canal del DIP switch durante las pruebas del receptor
+
+Durante las pruebas del receptor se utilizó un DIP switch de 8 posiciones para introducir diferentes palabras de prueba. La mayoría de las pruebas produjeron los resultados esperados; sin embargo, se presentó un problema específico al utilizar el canal correspondiente a la posición 3 del DIP switch.
+
+Cuando se activaba dicho canal, el sistema siempre recibía un valor `0`, independientemente de la posición en la que se colocara el interruptor.
+
+Inicialmente no fue posible determinar si el problema correspondía al código, a la conexión en la protoboard, al cableado o al propio DIP switch, debido a que en ese momento no se disponía de un multímetro para realizar las comprobaciones eléctricas.
+
+Como parte del proceso de depuración, se realizaron diferentes modificaciones y pruebas de hardware con el objetivo de descartar problemas en las conexiones y en la implementación.
+
+Al día siguiente, se utilizó un multímetro para comprobar directamente la señal correspondiente al canal problemático. La medición permitió determinar que la falla se encontraba en el DIP switch, ya que el canal no cambiaba correctamente de estado y permanecía en `0`.
+
+Para solucionar el problema, se reemplazó el DIP switch de 8 posiciones por uno nuevo. Posteriormente, se repitieron las pruebas del receptor y todas las pruebas que dependían de dicho canal funcionaron correctamente.
+
+Estos problemas permitieron identificar la importancia de verificar tanto la implementación lógica como las condiciones físicas del hardware durante el proceso de depuración.
 
 ## Apendices:
 ### Apendice 1:
