@@ -1,0 +1,69 @@
+$date
+	Sun Sep 20 23:47:39 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_sindrome_hamming $end
+$var wire 3 ! sindrome_po [2:0] $end
+$var reg 7 " palabra_pi [6:0] $end
+$scope module DUT $end
+$var wire 7 # palabra_pi [6:0] $end
+$var wire 3 $ sindrome_po [2:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b0 $
+b0 #
+b0 "
+b0 !
+$end
+#10000
+b1 !
+b1 $
+b1 "
+b1 #
+#20000
+b10 !
+b10 $
+b10 "
+b10 #
+#30000
+b11 !
+b11 $
+b100 "
+b100 #
+#40000
+b100 !
+b100 $
+b1000 "
+b1000 #
+#50000
+b101 !
+b101 $
+b10000 "
+b10000 #
+#60000
+b110 !
+b110 $
+b100000 "
+b100000 #
+#70000
+b111 !
+b111 $
+b1000000 "
+b1000000 #
+#80000
+b0 !
+b0 $
+b1010101 "
+b1010101 #
+#90000

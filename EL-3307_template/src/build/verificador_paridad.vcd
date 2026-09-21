@@ -1,0 +1,48 @@
+$date
+	Sun Sep 20 23:15:02 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_verificador_paridad $end
+$var wire 1 ! error_paridad_po $end
+$var reg 8 " palabra_pi [7:0] $end
+$scope module DUT $end
+$var wire 1 ! error_paridad_po $end
+$var wire 8 # palabra_pi [7:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b0 #
+b0 "
+0!
+$end
+#10000
+1!
+b1 "
+b1 #
+#20000
+0!
+b11 "
+b11 #
+#30000
+0!
+b10101010 "
+b10101010 #
+#40000
+1!
+b111 "
+b111 #
+#50000
+0!
+b11111111 "
+b11111111 #
+#60000

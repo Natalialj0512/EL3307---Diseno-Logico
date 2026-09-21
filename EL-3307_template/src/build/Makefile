@@ -22,7 +22,7 @@ SOURCES = ../design/top.sv \
 
 #Fuente de simulacion
 #aca va el testbench que quieran simular
-TESTBENCH = ../sim/tb_binario_7seg.sv
+TESTBENCH = ../sim/tb_despliegue_receptor.sv
 
 # Constraints para el proyecto
 #aca va el archivo de constraints del proyecto
@@ -30,10 +30,10 @@ CONSTRAINTS = ../constr/tangnano9k_constraints_template.cst
 
 #el top se indica sin la extension .v, esto hace referencia al nombre que le pusieron al módulo y no al archivo en si.
 TOP_DESIGN = top
-TOP_TB     = 
+TOP_TB     = tb_despliegue_receptor
 
 #nombre del vcd que va a generar el tb
-VCD_FILE = 
+VCD_FILE = tb_despliegue_receptor.vcd
 
 
 all: synth pnr bitstream load

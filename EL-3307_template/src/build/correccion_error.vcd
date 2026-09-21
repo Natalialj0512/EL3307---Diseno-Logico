@@ -1,0 +1,154 @@
+$date
+	Mon Sep 21 00:10:36 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module tb_correccion_error $end
+$var wire 4 ! datos_corregidos [3:0] $end
+$var wire 1 " DED $end
+$var reg 7 # palabra_rx [6:0] $end
+$var reg 1 $ paridad_mal $end
+$var reg 3 % sindrome [2:0] $end
+$scope module DUT $end
+$var wire 1 " DED $end
+$var wire 1 & SEC $end
+$var wire 1 ' error_1 $end
+$var wire 1 ( error_2 $end
+$var wire 1 ) error_3 $end
+$var wire 1 * error_4 $end
+$var wire 1 + error_5 $end
+$var wire 1 , error_6 $end
+$var wire 1 - error_7 $end
+$var wire 7 . palabra_rx [6:0] $end
+$var wire 1 $ paridad_mal $end
+$var wire 3 / sindrome [2:0] $end
+$var wire 1 0 sindrome_error $end
+$var wire 7 1 palabra_corregida [6:0] $end
+$var wire 4 2 datos_corregidos [3:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b1011 2
+b1010101 1
+00
+b0 /
+b1010101 .
+0-
+0,
+0+
+0*
+0)
+0(
+0'
+0&
+b0 %
+0$
+b1010101 #
+0"
+b1011 !
+$end
+#10000
+1'
+1&
+10
+b1010101 1
+b1 %
+b1 /
+1$
+b1010100 #
+b1010100 .
+#20000
+1&
+1(
+10
+0'
+b1010101 1
+b10 %
+b10 /
+b1010111 #
+b1010111 .
+#30000
+0(
+b1011 !
+b1011 2
+1)
+b1010101 1
+b11 %
+b11 /
+b1010001 #
+b1010001 .
+#40000
+1*
+b1011 !
+b1011 2
+0)
+b1010101 1
+b100 %
+b100 /
+b1011101 #
+b1011101 .
+#50000
+0*
+b1011 !
+b1011 2
+1+
+b1010101 1
+b101 %
+b101 /
+b1000101 #
+b1000101 .
+#60000
+0*
+1,
+b1011 !
+b1011 2
+0+
+b1010101 1
+b110 %
+b110 /
+b1110101 #
+b1110101 .
+#70000
+0,
+b1011 !
+b1011 2
+1-
+b1010101 1
+b111 %
+b111 /
+b10101 #
+b10101 .
+#80000
+0-
+b1101 !
+b1101 2
+1"
+b1100101 1
+0&
+b11 %
+b11 /
+0$
+b1100101 #
+b1100101 .
+#90000
+00
+b1011 !
+b1011 2
+0"
+b1010101 1
+0&
+b0 %
+b0 /
+1$
+b1010101 #
+b1010101 .
+#100000
