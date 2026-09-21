@@ -1,8 +1,8 @@
 module generador_error (
-    input wire [7:0] palabra_codificada_pi,
-    input wire [2:0] error_pos1_pi,
-    input wire [2:0] error_pos2_pi,
-    output wire [7:0] palabra_error_po
+    input wire [7:0] palabra_codificada_pi, // Entrada de las XOR: P i3 i2 i1 c2 i0 c1 c0
+    input wire [2:0] error_pos1_pi, // Entrada de la posición de error 1
+    input wire [2:0] error_pos2_pi, // Entrada de la posición de error 2
+    output wire [7:0] palabra_error_po // Salida 8 bits con la palabra codificada de hamming
 );
 
     // Bits de los dos switches de posición
@@ -32,7 +32,7 @@ module generador_error (
     wire error2_bit7;
 
 
-    // Separamos los bits de los switches
+    // Se separan los bits de los switches y copia el valor que venga de la entrada
     assign e1_2 = error_pos1_pi[2];
     assign e1_1 = error_pos1_pi[1];
     assign e1_0 = error_pos1_pi[0];
@@ -90,7 +90,7 @@ module generador_error (
         palabra_codificada_pi[6] ^ error1_bit7 ^ error2_bit7;
 
 
-    // El bit de paridad global P no se le hacen modificaciones
+    // El bit de paridad global P no se cambia, siempre queda igual
     assign palabra_error_po[7] = palabra_codificada_pi[7];
 
 endmodule

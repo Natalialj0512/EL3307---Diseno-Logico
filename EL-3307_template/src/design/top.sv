@@ -1,7 +1,5 @@
 module top (
-    // ========================================================
     // SWITCHES DE CONTROL
-    // ========================================================
 
     // 0 = transmisor
     // 1 = receptor
@@ -16,14 +14,14 @@ module top (
     // ENTRADAS DEL TRANSMISOR
     // ========================================================
 
-    // Palabra de datos de 4 bits
+    // Palabra de datos de 4 bits del transmisor
     input wire [3:0] codigo_bin_pi,
 
     // Posiciones de error de los dos switches
     input wire [2:0] error_pos1_pi,
     input wire [2:0] error_pos2_pi,
 
-    // Bits generados por las compuertas XOR externas
+    // Bits generados por las compuertas XOR externas de C0, C1, C2, y P
     input wire c0_pi,
     input wire c1_pi,
     input wire c2_pi,
@@ -31,8 +29,7 @@ module top (
 
 
     // ========================================================
-    // BUS COMPARTIDO ENTRE FPGA PARA CONECTAR ENTRE TRANSMISOR Y RECEPTOR
-    // ========================================================
+    // BITS ENTRE FPGA PARA CONECTAR ENTRE TRANSMISOR Y RECEPTOR p, i3, i2, i1, c2, i0, c1, c0
 
     inout wire [7:0] datos_io,
 
@@ -41,16 +38,16 @@ module top (
     // DISPLAY DE 7 SEGMENTOS
     // ========================================================
 
-    output wire [6:0] catodo_po,
-    output wire dig1_po,
-    output wire dig2_po,
+    output wire [6:0] catodo_po, // Segmentos
+    output wire dig1_po, // Transistor 1 para dígito 1
+    output wire dig2_po, // Transistor 2 para dígito 2
 
 
     // ========================================================
     // DOT POINT DE DOBLE ERROR
     // ========================================================
 
-    output wire dot_po
+    output wire dot_po // para activar el dop point
 );
 
 
@@ -59,7 +56,6 @@ module top (
     // ========================================================
 
     // Palabra Hamming + paridad global
-    //
     // [7] [6] [5] [4] [3] [2] [1] [0]
     //  P   i3  i2  i1  C2  i0  C1  C0
 
@@ -84,7 +80,7 @@ module top (
     // --------------------------------------------------------
 
     generador_error u_generador_error (
-        .palabra_codificada_pi(palabra_codificada),
+        .palabra_codificada_pi(palabra_codificada), // puerto del módulo con la señal del top
         .error_pos1_pi(error_pos1_pi),
         .error_pos2_pi(error_pos2_pi),
         .palabra_error_po(palabra_error)
@@ -92,10 +88,8 @@ module top (
 
 
     // --------------------------------------------------------
-    // Bus compartido
-    //
-    // TX -> FPGA coloca la palabra en el bus
-    // RX -> FPGA deja el bus en alta impedancia
+    // TX -> FPGA coloca la palabra en los 8 pines
+    // RX -> FPGA deja los pines en alta impedancia para recibir
     // --------------------------------------------------------
 
     assign datos_io = (modo_pi == 1'b0) ?
@@ -120,10 +114,8 @@ module top (
     // ========================================================
 
     // Palabra Hamming recibida
-    //
     // [6:0] = C0 C1 i0 C2 i1 i2 i3
-    //
-    // El bit [7] es la paridad global.
+    // El bit 7 es la paridad global.
 
     wire [6:0] palabra_rx;
     wire       paridad_mal;
@@ -146,11 +138,9 @@ module top (
     assign palabra_rx = datos_io[6:0];
 
 
-    // Palabra recibida directamente del bus.
-    //
-    // IMPORTANTE:
+    // Palabra recibida directamente de los pines del otro grupo
     // Esta es la que se muestra cuando display_pi = 0.
-    // No se corrige antes de mostrarla.
+    // No se corrige antes de mostrarla
 
     assign palabra_recibida[3] = datos_io[6]; // i3
     assign palabra_recibida[2] = datos_io[5]; // i2
@@ -201,7 +191,7 @@ module top (
 
 
     despliegue_receptor u_despliegue_receptor (
-        // Palabra recibida directamente del bus
+        // Palabra recibida directamente de los pines
         .palabra_pi(palabra_recibida),
 
         // Síndrome calculado
@@ -231,7 +221,6 @@ module top (
 
     // --------------------------------------------------------
     // Segmentos
-    //
     // TX -> binario_7seg
     // RX -> despliegue_receptor
     // --------------------------------------------------------

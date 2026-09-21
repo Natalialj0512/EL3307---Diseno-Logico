@@ -1,16 +1,16 @@
 module correccion_error (
-    input  wire [6:0] palabra_rx,
-    input  wire       paridad_mal,
-    input  wire [2:0] sindrome,
+    input  wire [6:0] palabra_rx, // Palabra recibida sin la paridad
+    input  wire       paridad_mal, // Viene del módulo de verificador_paridad 
+    input  wire [2:0] sindrome, // Viene del módulo de sindrome_hamming
 
-    output wire [3:0] datos_corregidos,
-    output wire       DED
+    output wire [3:0] datos_corregidos, // La palabra corregida en i3 i2 i1 i0
+    output wire       DED // Si hay doble error
 );
 
     // Detecta si el síndrome es diferente de cero
     wire sindrome_error;
 
-    assign sindrome_error = sindrome[2] | sindrome[1] | sindrome[0];
+    assign sindrome_error = sindrome[2] | sindrome[1] | sindrome[0]; // Ve si alguno de los bits del síndrome es 0
 
     // Doble error: paridad correcta pero síndrome diferente de cero
     assign DED = ~paridad_mal & sindrome_error;
@@ -22,7 +22,7 @@ module correccion_error (
     assign SEC = paridad_mal & sindrome_error;
 
 
-    // Señales para invertir cada bit de Hamming
+    // Señales para invertir cada bit de Hamming (para corregir)
     wire error_1;
     wire error_2;
     wire error_3;
