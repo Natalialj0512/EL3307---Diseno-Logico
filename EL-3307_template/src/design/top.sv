@@ -40,7 +40,7 @@ module top (
     //Señal binaria receptor - display
 
     // TODO Solo descomentar para hacer simulación: 
-    //output wire [3:0] palabra_pi_d,
+    output wire [3:0] palabra_pi_d,
     output wire [6:0] catodo_po, // Segmentos
     output wire dig1_po, // Transistor 1 para dígito 1
     output wire dig2_po, // Transistor 2 para dígito 2
@@ -217,7 +217,7 @@ module top (
         .anodo_po(anodo_rx)
     );
 
-    assign palabra_pi_d = datos_corregidos;
+     assign palabra_pi_d = datos_corregidos; //PARA LA SIMULACIÓN
 
 
     // ========================================================
