@@ -28,10 +28,10 @@ module despliegue_receptor (
     // --------------------------------------------------------
 
     assign dato_mostrar[0] =
-        ~doble_error_pi &
+        ~doble_error_pi & //solo se hace esto si no hay doble error
         (
-            (~display_pi & palabra_pi[0]) |
-            ( display_pi & sindrome_pi[0])
+            (~display_pi & palabra_pi[0]) | // Si no hay doble error y display = 0, se muestra la palabra
+            ( display_pi & sindrome_pi[0]) // Si no hay doble error y display = 1, se muestra el síndrome
         );
 
 
@@ -40,12 +40,12 @@ module despliegue_receptor (
     // --------------------------------------------------------
 
     assign dato_mostrar[1] =
-        doble_error_pi |
+        doble_error_pi | // Si hay doble error, se pone en 1
         (
-            ~doble_error_pi &
+            ~doble_error_pi & //solo se hace esto si no hay doble error
             (
-                (~display_pi & palabra_pi[1]) |
-                ( display_pi & sindrome_pi[1])
+                (~display_pi & palabra_pi[1]) | // Si no hay doble error y display = 0, se muestra la palabra
+                ( display_pi & sindrome_pi[1]) // Si no hay doble error y display = 1, se muestra el síndrome
             )
         );
 
@@ -86,11 +86,11 @@ module despliegue_receptor (
     // ========================================================
     // LEDs
     //
-    // Los LEDs muestran siempre la palabra recibida.
-    // El switch display NO afecta estos LEDs.
+    // Los LEDs muestran la palabra corregida.
+    // El switch display NO afecta estos LEDs, solo cambia lo que se muestra en el display.
     // ========================================================
 
-    assign codigo_bin_led_po = palabra_pi;
+    assign codigo_bin_led_po = palabra_pi; // Se muestran los 4 bits de la palabra corregida
 
 
     // ========================================================
@@ -116,7 +116,7 @@ module despliegue_receptor (
     // Segmento A
     // --------------------------------------------------------
 
-    assign a =
+    assign a = // Se enciende el segmento A si se cumple alguna de estas condiciones
           (dato_mostrar[1] & dato_mostrar[2]) |
           (dato_mostrar[1] & ~dato_mostrar[3]) |
           (dato_mostrar[3] & ~dato_mostrar[0]) |
@@ -234,8 +234,8 @@ module despliegue_receptor (
     // display_pi = 1 -> display 1
     // ========================================================
 
-    assign anodo_po[0] = display_pi;
-    assign anodo_po[1] = ~display_pi;
+    assign anodo_po[0] = display_pi; // Se enciende el display 0 si display_pi = 0
+    assign anodo_po[1] = ~display_pi; // Se enciende el display 1 si display_pi = 1
 
 
 endmodule
