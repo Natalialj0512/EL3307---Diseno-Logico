@@ -3,20 +3,19 @@
 module top_tb;
 
     // ENTRADAS DEL TOP
-    
 
-    reg modo_pi;
-    reg display_pi;
+    logic modo_pi;
+    logic display_pi;
 
-    reg [3:0] codigo_bin_pi;
+    logic [3:0] codigo_bin_pi;
 
-    reg [2:0] error_pos1_pi;
-    reg [2:0] error_pos2_pi;
+    logic [2:0] error_pos1_pi;
+    logic [2:0] error_pos2_pi;
 
-    reg c0_pi;
-    reg c1_pi;
-    reg c2_pi;
-    reg p_pi;
+    logic c0_pi;
+    logic c1_pi;
+    logic c2_pi;
+    logic p_pi;
 
 
     // ========================================================
@@ -25,24 +24,25 @@ module top_tb;
 
     tri [7:0] datos_io;
 
-    // Datos que simulan la otra FPGA, para poder respresntar bien el receptor y el transmisor
-    reg [7:0] datos_externos;
+    // Datos que simulan la otra FPGA, para poder representar
+    // bien el receptor y el transmisor
+    logic [7:0] datos_externos;
 
     // 1 = la FPGA externa conduce el bus
     // 0 = la FPGA externa libera el bus
-    reg habilitar_externo;
+    logic habilitar_externo;
 
 
     // SALIDAS DEL TOP
-    
 
-    wire [6:0] catodo_po;
-    wire dig1_po;
-    wire dig2_po;
-    wire dot_po;
+    logic [6:0] catodo_po;
+    logic dig1_po;
+    logic dig2_po;
+    logic dot_po;
+
+    logic [3:0] palabra_pi_d;
 
 
-    wire [3:0] palabra_pi_d;
     // ========================================================
     // DRIVER EXTERNO DEL BUS
     // ========================================================
@@ -83,9 +83,8 @@ module top_tb;
 
 
     // ========================================================
-    // PRUEBAS :p (son 5 pruebas en total de 5 diferentes casos)
+    // PRUEBAS
     // ========================================================
-
 
     initial begin
         $dumpfile("top_tb.vcd");
@@ -96,7 +95,7 @@ module top_tb;
     initial begin
 
         // ----------------------------------------------------
-        // VALORES INICIALES (son los valores que se usaran para las pruebas)
+        // VALORES INICIALES
         // ----------------------------------------------------
 
         modo_pi = 1'b0;
@@ -140,7 +139,6 @@ module top_tb;
         $display("==============================================");
 
 
-
         // ====================================================
         // PRUEBA 2
         // TRANSMISOR CON UN ERROR EN POSICION 3
@@ -166,7 +164,6 @@ module top_tb;
         $display("Palabra corregida   : %b", palabra_pi_d);
         $display("Esperado corregida  : 1010");
         $display("==============================================");
-
 
 
         // ====================================================
@@ -206,7 +203,6 @@ module top_tb;
         $display("==============================================");
 
 
-
         // ====================================================
         // PRUEBA 4
         // RECEPTOR CON UN ERROR EN POSICION 3
@@ -242,7 +238,6 @@ module top_tb;
         $display("Esperado DED     : 0");
 
 
-
         // Ahora mostrar el sindrome
         display_pi = 1'b1;
 
@@ -250,7 +245,6 @@ module top_tb;
 
         $display("Display cambiado a SINDROME");
         $display("==============================================");
-
 
 
         // ====================================================
@@ -283,7 +277,6 @@ module top_tb;
         $display("Esperado sindrome: 110");
         $display("Esperado DED     : 1");
         $display("==============================================");
-
 
 
         #20;

@@ -6,34 +6,31 @@ module tb_despliegue_receptor;
     // ENTRADAS DEL DUT
     // ========================================================
 
-    reg [3:0] palabra_pi;
-    reg [2:0] sindrome_pi;
-    reg       doble_error_pi;
-    reg       display_pi;
+    logic [3:0] palabra_pi;
+    logic [2:0] sindrome_pi;
+    logic       doble_error_pi;
+    logic       display_pi;
 
     // ========================================================
     // SALIDAS DEL DUT
     // ========================================================
 
-    wire [3:0] codigo_bin_led_po;
-    wire [6:0] catodo_po;
-    wire [1:0] anodo_po;
+    logic [3:0] codigo_bin_led_po;
+    logic [6:0] catodo_po;
+    logic [1:0] anodo_po;
 
     // ========================================================
     // INSTANCIA DEL MODULO
     // ========================================================
 
     despliegue_receptor DUT (
-
         .palabra_pi(palabra_pi),
         .sindrome_pi(sindrome_pi),
         .doble_error_pi(doble_error_pi),
         .display_pi(display_pi),
-
         .codigo_bin_led_po(codigo_bin_led_po),
         .catodo_po(catodo_po),
         .anodo_po(anodo_po)
-
     );
 
     // ========================================================
@@ -45,7 +42,6 @@ module tb_despliegue_receptor;
         $dumpvars(0, tb_despliegue_receptor);
     end
 
-
     // ========================================================
     // PRUEBAS
     // ========================================================
@@ -55,7 +51,6 @@ module tb_despliegue_receptor;
         $display("==============================================");
         $display(" TESTBENCH - DESPLIEGUE RECEPTOR");
         $display("==============================================");
-
 
         // ----------------------------------------------------
         // INICIALIZACION
@@ -67,7 +62,6 @@ module tb_despliegue_receptor;
         display_pi     = 1'b0;
 
         #10;
-
 
         // ====================================================
         // PRUEBA 1

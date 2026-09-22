@@ -2,123 +2,190 @@
 
 module binario_7seg_tb;
 
-    // Entradas del DUT
-    reg [3:0] codigo_bin_pi;
+    // ========================================================
+    // SEÑALES DEL DUT
+    // ========================================================
 
-    // Salidas del DUT
-    wire [6:0] catodo_po;
+    // Entrada del módulo bajo prueba
+    logic [3:0] codigo_bin_pi;
 
-    // Instancia del módulo bajo prueba
+    // Salida del módulo bajo prueba
+    logic [6:0] catodo_po;
+
+
+    // ========================================================
+    // INSTANCIA DEL MÓDULO BAJO PRUEBA
+    // ========================================================
+
     binario_7seg DUT (
         .codigo_bin_pi(codigo_bin_pi),
         .catodo_po(catodo_po)
     );
 
-    // Archivo de ondas
+
+    // ========================================================
+    // ARCHIVO DE ONDAS
+    // ========================================================
+
     initial begin
         $dumpfile("binario_7seg.vcd");
         $dumpvars(0, binario_7seg_tb);
     end
 
-    // Pruebas
+
+    // ========================================================
+    // PRUEBAS
+    // ========================================================
+
     initial begin
 
-        // 0
+        // ----------------------------------------------------
+        // Entrada 0
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd0;
         #10;
-        if (catodo_po != 7'b1000000)
-            $display("ERROR: entrada 0, salida = %b, esperada = 1000000", catodo_po);
+        $display("Entrada 0: salida = %b, esperada = 1000000",
+                 catodo_po);
 
-        // 1
+
+        // ----------------------------------------------------
+        // Entrada 1
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd1;
         #10;
-        if (catodo_po != 7'b1111011)
-            $display("ERROR: entrada 1, salida = %b, esperada = 1111011", catodo_po);
+        $display("Entrada 1: salida = %b, esperada = 1111011",
+                 catodo_po);
 
-        // 2
+
+        // ----------------------------------------------------
+        // Entrada 2
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd2;
         #10;
-        if (catodo_po != 7'b0100100)
-            $display("ERROR: entrada 2, salida = %b, esperada = 0100100", catodo_po);
+        $display("Entrada 2: salida = %b, esperada = 0100100",
+                 catodo_po);
 
-        // 3
+
+        // ----------------------------------------------------
+        // Entrada 3
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd3;
         #10;
-        if (catodo_po != 7'b0110000)
-            $display("ERROR: entrada 3, salida = %b, esperada = 0110000", catodo_po);
+        $display("Entrada 3: salida = %b, esperada = 0110000",
+                 catodo_po);
 
-        // 4
+
+        // ----------------------------------------------------
+        // Entrada 4
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd4;
         #10;
-        if (catodo_po != 7'b0011001)
-            $display("ERROR: entrada 4, salida = %b, esperada = 0011001", catodo_po);
+        $display("Entrada 4: salida = %b, esperada = 0011001",
+                 catodo_po);
 
-        // 5
+
+        // ----------------------------------------------------
+        // Entrada 5
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd5;
         #10;
-        if (catodo_po != 7'b0010010)
-            $display("ERROR: entrada 5, salida = %b, esperada = 0010010", catodo_po);
+        $display("Entrada 5: salida = %b, esperada = 0010010",
+                 catodo_po);
 
-        // 6
+
+        // ----------------------------------------------------
+        // Entrada 6
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd6;
         #10;
-        if (catodo_po != 7'b0000010)
-            $display("ERROR: entrada 6, salida = %b, esperada = 0000010", catodo_po);
+        $display("Entrada 6: salida = %b, esperada = 0000010",
+                 catodo_po);
 
-        // 7
+
+        // ----------------------------------------------------
+        // Entrada 7
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd7;
         #10;
-        if (catodo_po != 7'b1111000)
-            $display("ERROR: entrada 7, salida = %b, esperada = 1111000", catodo_po);
+        $display("Entrada 7: salida = %b, esperada = 1111000",
+                 catodo_po);
 
-        // 8
+
+        // ----------------------------------------------------
+        // Entrada 8
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd8;
         #10;
-        if (catodo_po != 7'b0000000)
-            $display("ERROR: entrada 8, salida = %b, esperada = 0000000", catodo_po);
+        $display("Entrada 8: salida = %b, esperada = 0000000",
+                 catodo_po);
 
-        // 9
+
+        // ----------------------------------------------------
+        // Entrada 9
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd9;
         #10;
-        if (catodo_po != 7'b0010000)
-            $display("ERROR: entrada 9, salida = %b, esperada = 0010000", catodo_po);
+        $display("Entrada 9: salida = %b, esperada = 0010000",
+                 catodo_po);
 
-        // A
+
+        // ----------------------------------------------------
+        // Entrada A
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd10;
         #10;
-        if (catodo_po != 7'b0001000)
-            $display("ERROR: entrada A, salida = %b, esperada = 0001000", catodo_po);
+        $display("Entrada A: salida = %b, esperada = 0001000",
+                 catodo_po);
 
-        // B
+
+        // ----------------------------------------------------
+        // Entrada B
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd11;
         #10;
-        if (catodo_po != 7'b0000011)
-            $display("ERROR: entrada B, salida = %b, esperada = 0000011", catodo_po);
+        $display("Entrada B: salida = %b, esperada = 0000011",
+                 catodo_po);
 
-        // C
+
+        // ----------------------------------------------------
+        // Entrada C
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd12;
         #10;
-        if (catodo_po != 7'b1000110)
-            $display("ERROR: entrada C, salida = %b, esperada = 1000110", catodo_po);
+        $display("Entrada C: salida = %b, esperada = 1000110",
+                 catodo_po);
 
-        // D
+
+        // ----------------------------------------------------
+        // Entrada D
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd13;
         #10;
-        if (catodo_po != 7'b0100001)
-            $display("ERROR: entrada D, salida = %b, esperada = 0100001", catodo_po);
+        $display("Entrada D: salida = %b, esperada = 0100001",
+                 catodo_po);
 
-        // E
+
+        // ----------------------------------------------------
+        // Entrada E
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd14;
         #10;
-        if (catodo_po != 7'b0000110)
-            $display("ERROR: entrada E, salida = %b, esperada = 0000110", catodo_po);
+        $display("Entrada E: salida = %b, esperada = 0000110",
+                 catodo_po);
 
-        // F
+
+        // ----------------------------------------------------
+        // Entrada F
+        // ----------------------------------------------------
         codigo_bin_pi = 4'd15;
         #10;
-        if (catodo_po != 7'b0001110)
-            $display("ERROR: entrada F, salida = %b, esperada = 0001110", catodo_po);
+        $display("Entrada F: salida = %b, esperada = 0001110",
+                 catodo_po);
 
+
+        // ----------------------------------------------------
+        // Finalizar simulación
+        // ----------------------------------------------------
         $finish;
 
     end
