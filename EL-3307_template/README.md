@@ -862,9 +862,226 @@ Se comprobó la representación de palabras en hexadecimal, la visualización de
 
 </details>
 
+</details>
 
+
+
+
+<details>
+<summary><strong>Testbench del sistema completo (TOP)</strong></summary>
+
+#### 1. Objetivo del testbench
+
+El testbench `top_tb` permite verificar la integración de los módulos que conforman el sistema completo de transmisión y recepción.
+
+Se realizan pruebas en los modos transmisor y receptor, verificando la generación de la palabra Hamming, la inserción de errores, la transmisión mediante el bus de 8 bits, la detección de errores, la corrección de un error simple y la detección de doble error.
+
+Además, se verifica el funcionamiento del despliegue de la palabra corregida y del síndrome en el display de 7 segmentos.
+
+#### 2. Pruebas del transmisor
+
+##### Prueba 1 — Transmisor sin error
+
+Se ingresó la palabra de información:
+
+```text
+Código de entrada: 1010
+```
+
+El transmisor generó la siguiente palabra en el bus:
+
+```text
+Datos en el bus: 11010010
+Esperado:        11010010
+```
+
+La palabra generada coincide con el valor esperado.
+
+**Resultado: Correcto.**
+
+##### Prueba 2 — Transmisor con error en posición 3
+
+Se utilizó como palabra original:
+
+```text
+11010010
+```
+
+Se configuró la inserción de un error en la posición Hamming 3:
+
+```text
+Posición Hamming: 3
+Índice del vector: 2
+```
+
+La palabra obtenida después de la inserción del error fue:
+
+```text
+Palabra original:  11010010
+Palabra con error: 11010110
+Esperado:          11010110
+```
+
+Posteriormente, la palabra fue procesada por el receptor y se obtuvo:
+
+```text
+Palabra corregida: 1010
+Esperado:          1010
+```
+
+El error fue insertado en la posición Hamming indicada y posteriormente corregido correctamente por el receptor.
+
+**Resultado: Correcto.**
+
+#### 3. Pruebas del receptor
+
+##### Prueba 3 — Receptor sin error
+
+Se ingresó al receptor la palabra:
+
+```text
+Datos recibidos: 11010010
+```
+
+El sistema obtuvo:
+
+```text
+Palabra recibida: 1010
+Paridad mal:      0
+Síndrome:         000
+DED:              0
+```
+
+Los valores esperados fueron:
+
+```text
+Palabra esperada:  1010
+Síndrome esperado: 000
+DED esperado:      0
+```
+
+Los resultados obtenidos coinciden con los valores esperados.
+
+**Resultado: Correcto.**
+
+##### Prueba 4 — Receptor con un error
+
+Se ingresó al receptor la palabra:
+
+```text
+11010110
+```
+
+Esta palabra contiene un error en la posición Hamming 3.
+
+El receptor obtuvo:
+
+```text
+Palabra recibida: 1011
+Paridad mal:      1
+Síndrome:         011
+Datos corregidos: 1010
+DED:              0
+```
+
+Los valores esperados fueron:
+
+```text
+Síndrome esperado: 011
+DED esperado:      0
+```
+
+El síndrome `011` identifica la posición Hamming 3. El módulo de corrección invierte el bit correspondiente y recupera la palabra original:
+
+```text
+Datos corregidos: 1010
+```
+
+En esta prueba también se cambió la selección del display para mostrar el síndrome.
+
+**Resultado: Correcto.**
+
+##### Prueba 5 — Receptor con dos errores
+
+Se ingresó al receptor la palabra:
+
+```text
+11000110
+```
+
+El sistema obtuvo:
+
+```text
+Paridad mal: 0
+Síndrome:    110
+DED:         1
+DOT:         0
+```
+
+Los valores esperados fueron:
+
+```text
+Síndrome esperado: 110
+DED esperado:      1
+```
+
+El sistema identificó la condición de doble error mediante la combinación de la paridad global y el síndrome Hamming.
+
+Debido a que `DED = 1`, el indicador `DOT` se activa mediante una salida en nivel bajo, debido a que el display utilizado es de ánodo común.
+
+**Resultado: Correcto.**
+
+#### 4. Despliegue de la palabra corregida
+
+En el módulo `top` se utiliza la salida `datos_corregidos` del módulo de corrección como entrada del módulo `despliegue_receptor`.
+
+Por lo tanto, cuando el sistema se encuentra en modo receptor y `display_pi = 0`, el display de 7 segmentos muestra la **palabra de información corregida**.
+
+Cuando `display_pi = 1`, el display muestra el **síndrome Hamming**, permitiendo visualizar la posición del error detectado.
+
+La selección se realiza mediante:
+
+```text
+display_pi = 0 → Palabra corregida
+display_pi = 1 → Síndrome
+```
+
+#### 5. Evidencia de la simulación
+
+La simulación del `top` fue realizada mediante GTKWave a partir del archivo `top_tb.vcd`.
+
+En las formas de onda se pueden observar las señales correspondientes a los modos de transmisión y recepción, la palabra de entrada, las posiciones de error, el bus `datos_io[7:0]`, las señales de paridad y las salidas asociadas al display.
+
+<img src="doc/images/tb_toptest.jpeg" width="800">
+
+*Figura. Simulación del TOP durante las pruebas de transmisión.*
+
+<img src="docs/imagenes/tb_toptest2.jpeg" width="800">
+
+*Figura. Simulación del TOP durante las pruebas de recepción.*
+
+#### 6. Resumen de resultados
+
+| Prueba | Modo | Condición | Resultado |
+|:---:|:---|:---|:---:|
+| 1 | Transmisor | Sin error | Correcto |
+| 2 | Transmisor + receptor | Error en posición 3 y corrección | Correcto |
+| 3 | Receptor | Sin error | Correcto |
+| 4 | Receptor | Un error en posición 3 | Correcto |
+| 5 | Receptor | Dos errores | Correcto |
+
+#### 7. Resultado del testbench
+
+Las pruebas realizadas permitieron verificar la integración del transmisor y receptor dentro del módulo `top`.
+
+Se comprobó la generación de la palabra codificada, la inserción de un error en una posición Hamming determinada, la transmisión de la palabra mediante el bus de 8 bits, la detección del error mediante la paridad y el síndrome, la corrección de un error simple y la detección de una condición de doble error.
+
+También se verificó el funcionamiento del despliegue de la palabra corregida y del síndrome en el display de 7 segmentos.
+
+Los resultados obtenidos en las cinco pruebas coincidieron con los valores esperados.
 
 </details>
+
 
 
 <details>
