@@ -2,13 +2,30 @@
 
 module tb_verificador_paridad;
 
-    reg  [7:0] palabra_pi;
-    wire       error_paridad_po;
+    // ========================================================
+    // ENTRADAS DEL DUT
+    // ========================================================
+
+    logic [7:0] palabra_pi;
+
+    // ========================================================
+    // SALIDA DEL DUT
+    // ========================================================
+
+    logic error_paridad_po;
+
+    // ========================================================
+    // INSTANCIA DEL MODULO
+    // ========================================================
 
     verificador_paridad DUT (
         .palabra_pi(palabra_pi),
         .error_paridad_po(error_paridad_po)
     );
+
+    // ========================================================
+    // SIMULACION
+    // ========================================================
 
     initial begin
 
@@ -19,83 +36,89 @@ module tb_verificador_paridad;
         $display("       TESTBENCH - VERIFICADOR DE PARIDAD");
         $display("==============================================");
 
-        // Prueba 1: 0 unos -> paridad par
+
+        // ----------------------------------------------------
+        // PRUEBA 1: 0 unos -> paridad par
+        // Resultado esperado: error = 0
+        // ----------------------------------------------------
+
         palabra_pi = 8'b00000000;
         #10;
 
-        if (error_paridad_po == 1'b0)
-            $display("Prueba 1: PASS | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
-        else
-            $display("Prueba 1: FAIL | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
+        $display("Prueba 1: Entrada: %b | Error obtenido: %b | Error esperado: 0",
+                 palabra_pi, error_paridad_po);
 
 
-        // Prueba 2: 1 uno -> paridad impar
+        // ----------------------------------------------------
+        // PRUEBA 2: 1 uno -> paridad impar
+        // Resultado esperado: error = 1
+        // ----------------------------------------------------
+
         palabra_pi = 8'b00000001;
         #10;
 
-        if (error_paridad_po == 1'b1)
-            $display("Prueba 2: PASS | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
-        else
-            $display("Prueba 2: FAIL | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
+        $display("Prueba 2: Entrada: %b | Error obtenido: %b | Error esperado: 1",
+                 palabra_pi, error_paridad_po);
 
 
-        // Prueba 3: 2 unos -> paridad par
+        // ----------------------------------------------------
+        // PRUEBA 3: 2 unos -> paridad par
+        // Resultado esperado: error = 0
+        // ----------------------------------------------------
+
         palabra_pi = 8'b00000011;
         #10;
 
-        if (error_paridad_po == 1'b0)
-            $display("Prueba 3: PASS | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
-        else
-            $display("Prueba 3: FAIL | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
+        $display("Prueba 3: Entrada: %b | Error obtenido: %b | Error esperado: 0",
+                 palabra_pi, error_paridad_po);
 
 
-        // Prueba 4: 4 unos -> paridad par
+        // ----------------------------------------------------
+        // PRUEBA 4: 4 unos -> paridad par
+        // Resultado esperado: error = 0
+        // ----------------------------------------------------
+
         palabra_pi = 8'b10101010;
         #10;
 
-        if (error_paridad_po == 1'b0)
-            $display("Prueba 4: PASS | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
-        else
-            $display("Prueba 4: FAIL | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
+        $display("Prueba 4: Entrada: %b | Error obtenido: %b | Error esperado: 0",
+                 palabra_pi, error_paridad_po);
 
 
-        // Prueba 5: 3 unos -> paridad impar
+        // ----------------------------------------------------
+        // PRUEBA 5: 3 unos -> paridad impar
+        // Resultado esperado: error = 1
+        // ----------------------------------------------------
+
         palabra_pi = 8'b00000111;
         #10;
 
-        if (error_paridad_po == 1'b1)
-            $display("Prueba 5: PASS | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
-        else
-            $display("Prueba 5: FAIL | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
+        $display("Prueba 5: Entrada: %b | Error obtenido: %b | Error esperado: 1",
+                 palabra_pi, error_paridad_po);
 
 
-        // Prueba 6: 8 unos -> paridad par
+        // ----------------------------------------------------
+        // PRUEBA 6: 8 unos -> paridad par
+        // Resultado esperado: error = 0
+        // ----------------------------------------------------
+
         palabra_pi = 8'b11111111;
         #10;
 
-        if (error_paridad_po == 1'b0)
-            $display("Prueba 6: PASS | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
-        else
-            $display("Prueba 6: FAIL | Entrada: %b | Error: %b",
-                     palabra_pi, error_paridad_po);
+        $display("Prueba 6: Entrada: %b | Error obtenido: %b | Error esperado: 0",
+                 palabra_pi, error_paridad_po);
 
+
+        // ====================================================
+        // FINAL
+        // ====================================================
 
         $display("==============================================");
         $display("              FIN DEL TESTBENCH :DD");
         $display("==============================================");
 
         $finish;
+
     end
 
 endmodule

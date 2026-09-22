@@ -3,7 +3,7 @@
 module tb_sindrome_hamming;
 
     // Entrada del DUT
-    reg [6:0] palabra_pi;
+    logic [6:0] palabra_pi;
 
     // Salida del DUT
     wire [2:0] sindrome_po;

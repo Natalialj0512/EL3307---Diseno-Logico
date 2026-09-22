@@ -2,15 +2,24 @@
 
 module generador_error_tb;
 
-    // Entradas del DUT
-    reg [7:0] palabra_codificada_pi;
-    reg [2:0] error_pos1_pi;
-    reg [2:0] error_pos2_pi;
+    // ========================================================
+    // ENTRADAS DEL DUT
+    // ========================================================
 
-    // Salida del DUT
-    wire [7:0] palabra_error_po;
+    logic [7:0] palabra_codificada_pi;
+    logic [2:0] error_pos1_pi;
+    logic [2:0] error_pos2_pi;
 
-    // Instancia del módulo que a probar
+    // ========================================================
+    // SALIDA DEL DUT
+    // ========================================================
+
+    logic [7:0] palabra_error_po;
+
+    // ========================================================
+    // INSTANCIA DEL MÓDULO A PROBAR
+    // ========================================================
+
     generador_error DUT (
         .palabra_codificada_pi(palabra_codificada_pi),
         .error_pos1_pi(error_pos1_pi),
@@ -18,7 +27,12 @@ module generador_error_tb;
         .palabra_error_po(palabra_error_po)
     );
 
+    // ========================================================
+    // SIMULACIÓN
+    // ========================================================
+
     initial begin
+
         $dumpfile("generador_error_tb.vcd");
         $dumpvars(0, generador_error_tb);
 
@@ -29,6 +43,7 @@ module generador_error_tb;
         // ------------------------------------------------
         // PRUEBA 1: Sin errores
         // ------------------------------------------------
+
         palabra_codificada_pi = 8'b10101010;
         error_pos1_pi = 3'b000;
         error_pos2_pi = 3'b000;
@@ -45,6 +60,7 @@ module generador_error_tb;
         // ------------------------------------------------
         // PRUEBA 2: Un error en posición 1
         // ------------------------------------------------
+
         palabra_codificada_pi = 8'b10101010;
         error_pos1_pi = 3'b001;
         error_pos2_pi = 3'b000;
@@ -61,6 +77,7 @@ module generador_error_tb;
         // ------------------------------------------------
         // PRUEBA 3: Un error en posición 3
         // ------------------------------------------------
+
         palabra_codificada_pi = 8'b10101010;
         error_pos1_pi = 3'b011;
         error_pos2_pi = 3'b000;
@@ -77,6 +94,7 @@ module generador_error_tb;
         // ------------------------------------------------
         // PRUEBA 4: Un error en posición 7
         // ------------------------------------------------
+
         palabra_codificada_pi = 8'b10101010;
         error_pos1_pi = 3'b111;
         error_pos2_pi = 3'b000;
@@ -94,6 +112,7 @@ module generador_error_tb;
         // PRUEBA 5: Dos errores en posiciones diferentes
         // Posiciones 2 y 5
         // ------------------------------------------------
+
         palabra_codificada_pi = 8'b10101010;
         error_pos1_pi = 3'b010;
         error_pos2_pi = 3'b101;
@@ -110,6 +129,7 @@ module generador_error_tb;
         // ------------------------------------------------
         // PRUEBA 6: Dos errores en posiciones 3 y 7
         // ------------------------------------------------
+
         palabra_codificada_pi = 8'b10101010;
         error_pos1_pi = 3'b011;
         error_pos2_pi = 3'b111;
@@ -127,6 +147,7 @@ module generador_error_tb;
         // PRUEBA 7: Ambos switches en la misma posición
         // Los errores se cancelan
         // ------------------------------------------------
+
         palabra_codificada_pi = 8'b10101010;
         error_pos1_pi = 3'b011;
         error_pos2_pi = 3'b011;
@@ -139,6 +160,10 @@ module generador_error_tb;
         $display("Error 2 : %b", error_pos2_pi);
         $display("Salida  : %b", palabra_error_po);
 
+
+        // ========================================================
+        // FINAL DE PRUEBAS
+        // ========================================================
 
         $display("==============================================");
         $display("              FINAL DE PRUEBAS :DD");

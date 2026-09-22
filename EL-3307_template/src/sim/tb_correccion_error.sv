@@ -2,16 +2,25 @@
 
 module tb_correccion_error;
 
-    // Entradas del DUT
-    reg [6:0] palabra_rx;
-    reg       paridad_mal;
-    reg [2:0] sindrome;
+    // ========================================================
+    // ENTRADAS DEL DUT
+    // ========================================================
 
-    // Salidas del DUT
-    wire [3:0] datos_corregidos;
-    wire       DED;
+    logic [6:0] palabra_rx;
+    logic       paridad_mal;
+    logic [2:0] sindrome;
 
-    // Instancia del módulo a probar
+    // ========================================================
+    // SALIDAS DEL DUT
+    // ========================================================
+
+    logic [3:0] datos_corregidos;
+    logic       DED;
+
+    // ========================================================
+    // INSTANCIA DEL MÓDULO A PROBAR
+    // ========================================================
+
     correccion_error DUT (
         .palabra_rx(palabra_rx),
         .paridad_mal(paridad_mal),
@@ -20,7 +29,12 @@ module tb_correccion_error;
         .DED(DED)
     );
 
+    // ========================================================
+    // SIMULACIÓN
+    // ========================================================
+
     initial begin
+
         $dumpfile("correccion_error.vcd");
         $dumpvars(0, tb_correccion_error);
 
@@ -70,7 +84,7 @@ module tb_correccion_error;
         // PRUEBA 3: ERROR EN POSICION 2
         // --------------------------------------------------
 
-        palabra_rx  = 7'b1010111;   
+        palabra_rx  = 7'b1010111;
         paridad_mal = 1'b1;
         sindrome    = 3'b010;
 
@@ -218,12 +232,17 @@ module tb_correccion_error;
         $display("DED            : %b", DED);
 
 
+        // --------------------------------------------------
+        // FIN DE SIMULACIÓN
+        // --------------------------------------------------
+
         $display("");
         $display("==============================================");
         $display("              FIN DE SIMULACION :DD");
         $display("==============================================");
 
         $finish;
+
     end
 
 endmodule
