@@ -1056,7 +1056,7 @@ En las formas de onda se pueden observar las señales correspondientes a los mod
 
 *Figura. Simulación del TOP durante las pruebas de transmisión.*
 
-<img src="docs/imagenes/tb_toptest2.jpeg" width="800">
+<img src="doc/images/tb_toptest2.jpeg" width="800">
 
 *Figura. Simulación del TOP durante las pruebas de recepción.*
 
