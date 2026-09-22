@@ -1,6 +1,6 @@
 module sindrome_hamming (
     // Me dice la posición de error
-    input  wire [6:0] palabra_pi, // Recibe 7 bits, no incluida la paridad
+    input  wire [6:0] palabra_pi, // Recibe 7 bits, no incluida la paridad: i3 i2 i1 c2 i0 c1 c0
     output wire [2:0] sindrome_po // Salen 3 bits: s0 s1 s2
 );
 

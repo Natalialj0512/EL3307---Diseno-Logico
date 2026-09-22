@@ -10,7 +10,7 @@ module correccion_error (
     // Detecta si el síndrome es diferente de cero
     wire sindrome_error;
 
-    assign sindrome_error = sindrome[2] | sindrome[1] | sindrome[0]; // Ve si alguno de los bits del síndrome es 0
+    assign sindrome_error = sindrome[2] | sindrome[1] | sindrome[0]; // Ve si alguno de los bits del síndrome es 1
 
     // Doble error: paridad correcta pero síndrome diferente de cero
     assign DED = ~paridad_mal & sindrome_error;

@@ -2,7 +2,7 @@ module generador_error (
     input wire [7:0] palabra_codificada_pi, // Entrada de las XOR: P i3 i2 i1 c2 i0 c1 c0
     input wire [2:0] error_pos1_pi, // Entrada de la posición de error 1
     input wire [2:0] error_pos2_pi, // Entrada de la posición de error 2
-    output wire [7:0] palabra_error_po // Salida 8 bits con la palabra codificada de hamming
+    output wire [7:0] palabra_error_po // Salida 8 bits con la palabra codificada de hamming pero con error
 );
 
     // Bits de los dos switches de posición
