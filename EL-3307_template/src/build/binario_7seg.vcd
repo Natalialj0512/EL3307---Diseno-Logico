@@ -1,0 +1,198 @@
+$date
+	Tue Sep 22 06:35:59 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module binario_7seg_tb $end
+$var wire 7 ! catodo_po [6:0] $end
+$var reg 4 " codigo_bin_pi [3:0] $end
+$scope module DUT $end
+$var wire 1 # a $end
+$var wire 1 $ b $end
+$var wire 1 % c $end
+$var wire 4 & codigo_bin_pi [3:0] $end
+$var wire 1 ' d $end
+$var wire 1 ( e $end
+$var wire 1 ) f $end
+$var wire 1 * g $end
+$var wire 1 + i3 $end
+$var wire 1 , i2 $end
+$var wire 1 - i1 $end
+$var wire 1 . i0 $end
+$var wire 7 / catodo_po [6:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b10000 /
+0.
+0-
+0,
+0+
+1*
+0)
+0(
+0'
+b0 &
+0%
+0$
+0#
+b0 "
+b10000 !
+$end
+#10000
+1)
+1'
+1#
+b111101 !
+b111101 /
+1(
+1.
+b1 "
+b1 &
+#20000
+0*
+0'
+0#
+1%
+b1100000 !
+b1100000 /
+0(
+1-
+0.
+b10 "
+b10 &
+#30000
+0%
+b100100 !
+b100100 /
+1(
+1.
+b11 "
+b11 &
+#40000
+0)
+1'
+b1101 !
+b1101 /
+1#
+1,
+0-
+0.
+b100 "
+b100 &
+#50000
+0'
+0#
+b110 !
+b110 /
+1$
+1.
+b101 "
+b101 &
+#60000
+b10 !
+b10 /
+0(
+1-
+0.
+b110 "
+b110 &
+#70000
+1*
+1)
+1'
+0$
+b111100 !
+b111100 /
+1(
+1.
+b111 "
+b111 &
+#80000
+0)
+0*
+0'
+b0 !
+b0 /
+0(
+1+
+0,
+0-
+0.
+b1000 "
+b1000 &
+#90000
+b100 !
+b100 /
+1(
+1.
+b1001 "
+b1001 &
+#100000
+1'
+b1000 !
+b1000 /
+0(
+1-
+0.
+b1010 "
+b1010 &
+#110000
+0'
+1#
+b11 !
+b11 /
+1$
+1.
+b1011 "
+b1011 &
+#120000
+0#
+1%
+b1010010 !
+b1010010 /
+1*
+1,
+0-
+0.
+b1100 "
+b1100 &
+#130000
+1#
+0*
+1)
+0%
+b100001 !
+b100001 /
+0$
+1.
+b1101 "
+b1101 &
+#140000
+0#
+1%
+1$
+b1000010 !
+b1000010 /
+0)
+1-
+0.
+b1110 "
+b1110 &
+#150000
+b1001010 !
+b1001010 /
+1'
+1.
+b1111 "
+b1111 &
+#160000
