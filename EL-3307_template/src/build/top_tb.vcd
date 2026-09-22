@@ -1,5 +1,5 @@
 $date
-	Mon Sep 21 17:01:27 2026
+	Mon Sep 21 20:07:28 2026
 $end
 $version
 	Icarus Verilog
@@ -9,130 +9,132 @@ $timescale
 $end
 $scope module top_tb $end
 $var wire 8 ! datos_io [7:0] $end
-$var wire 1 " dot_po $end
-$var wire 1 # dig2_po $end
-$var wire 1 $ dig1_po $end
-$var wire 7 % catodo_po [6:0] $end
-$var reg 1 & c0_pi $end
-$var reg 1 ' c1_pi $end
-$var reg 1 ( c2_pi $end
-$var reg 4 ) codigo_bin_pi [3:0] $end
-$var reg 8 * datos_externos [7:0] $end
-$var reg 1 + display_pi $end
-$var reg 3 , error_pos1_pi [2:0] $end
-$var reg 3 - error_pos2_pi [2:0] $end
-$var reg 1 . habilitar_externo $end
-$var reg 1 / modo_pi $end
-$var reg 1 0 p_pi $end
+$var wire 4 " palabra_pi_d [3:0] $end
+$var wire 1 # dot_po $end
+$var wire 1 $ dig2_po $end
+$var wire 1 % dig1_po $end
+$var wire 7 & catodo_po [6:0] $end
+$var reg 1 ' c0_pi $end
+$var reg 1 ( c1_pi $end
+$var reg 1 ) c2_pi $end
+$var reg 4 * codigo_bin_pi [3:0] $end
+$var reg 8 + datos_externos [7:0] $end
+$var reg 1 , display_pi $end
+$var reg 3 - error_pos1_pi [2:0] $end
+$var reg 3 . error_pos2_pi [2:0] $end
+$var reg 1 / habilitar_externo $end
+$var reg 1 0 modo_pi $end
+$var reg 1 1 p_pi $end
 $scope module DUT $end
-$var wire 1 & c0_pi $end
-$var wire 1 ' c1_pi $end
-$var wire 1 ( c2_pi $end
-$var wire 4 1 codigo_bin_pi [3:0] $end
-$var wire 8 2 datos_io [7:0] $end
-$var wire 1 + display_pi $end
-$var wire 3 3 error_pos1_pi [2:0] $end
-$var wire 3 4 error_pos2_pi [2:0] $end
-$var wire 1 / modo_pi $end
-$var wire 1 0 p_pi $end
-$var wire 3 5 sindrome [2:0] $end
-$var wire 1 6 paridad_mal $end
-$var wire 7 7 palabra_rx [6:0] $end
-$var wire 4 8 palabra_recibida [3:0] $end
-$var wire 8 9 palabra_error [7:0] $end
-$var wire 8 : palabra_codificada [7:0] $end
-$var wire 1 " dot_po $end
-$var wire 1 # dig2_po $end
-$var wire 1 $ dig1_po $end
-$var wire 4 ; datos_corregidos [3:0] $end
-$var wire 4 < codigo_bin_led_rx [3:0] $end
-$var wire 7 = catodo_tx [6:0] $end
-$var wire 7 > catodo_rx [6:0] $end
-$var wire 7 ? catodo_po [6:0] $end
-$var wire 2 @ anodo_rx [1:0] $end
-$var wire 1 A DED $end
+$var wire 1 ' c0_pi $end
+$var wire 1 ( c1_pi $end
+$var wire 1 ) c2_pi $end
+$var wire 4 2 codigo_bin_pi [3:0] $end
+$var wire 8 3 datos_io [7:0] $end
+$var wire 1 , display_pi $end
+$var wire 3 4 error_pos1_pi [2:0] $end
+$var wire 3 5 error_pos2_pi [2:0] $end
+$var wire 1 0 modo_pi $end
+$var wire 1 1 p_pi $end
+$var wire 4 6 palabra_pi_d [3:0] $end
+$var wire 3 7 sindrome [2:0] $end
+$var wire 1 8 paridad_mal $end
+$var wire 7 9 palabra_rx [6:0] $end
+$var wire 4 : palabra_recibida [3:0] $end
+$var wire 8 ; palabra_error [7:0] $end
+$var wire 8 < palabra_codificada [7:0] $end
+$var wire 1 # dot_po $end
+$var wire 1 $ dig2_po $end
+$var wire 1 % dig1_po $end
+$var wire 4 = datos_corregidos [3:0] $end
+$var wire 4 > codigo_bin_led_rx [3:0] $end
+$var wire 7 ? catodo_tx [6:0] $end
+$var wire 7 @ catodo_rx [6:0] $end
+$var wire 7 A catodo_po [6:0] $end
+$var wire 2 B anodo_rx [1:0] $end
+$var wire 1 C DED $end
 $scope module u_binario_7seg $end
-$var wire 1 B a $end
-$var wire 1 C b $end
-$var wire 1 D c $end
-$var wire 4 E codigo_bin_pi [3:0] $end
-$var wire 1 F d $end
-$var wire 1 G e $end
-$var wire 1 H f $end
-$var wire 1 I g $end
-$var wire 1 J i3 $end
-$var wire 1 K i2 $end
-$var wire 1 L i1 $end
-$var wire 1 M i0 $end
-$var wire 7 N catodo_po [6:0] $end
+$var wire 1 D a $end
+$var wire 1 E b $end
+$var wire 1 F c $end
+$var wire 4 G codigo_bin_pi [3:0] $end
+$var wire 1 H d $end
+$var wire 1 I e $end
+$var wire 1 J f $end
+$var wire 1 K g $end
+$var wire 1 L i3 $end
+$var wire 1 M i2 $end
+$var wire 1 N i1 $end
+$var wire 1 O i0 $end
+$var wire 7 P catodo_po [6:0] $end
 $upscope $end
 $scope module u_correccion_error $end
-$var wire 1 A DED $end
-$var wire 1 O SEC $end
-$var wire 1 P error_1 $end
-$var wire 1 Q error_2 $end
-$var wire 1 R error_3 $end
-$var wire 1 S error_4 $end
-$var wire 1 T error_5 $end
-$var wire 1 U error_6 $end
-$var wire 1 V error_7 $end
-$var wire 7 W palabra_rx [6:0] $end
-$var wire 1 X sindrome_error $end
-$var wire 3 Y sindrome [2:0] $end
-$var wire 1 6 paridad_mal $end
-$var wire 7 Z palabra_corregida [6:0] $end
-$var wire 4 [ datos_corregidos [3:0] $end
+$var wire 1 C DED $end
+$var wire 1 Q SEC $end
+$var wire 1 R error_1 $end
+$var wire 1 S error_2 $end
+$var wire 1 T error_3 $end
+$var wire 1 U error_4 $end
+$var wire 1 V error_5 $end
+$var wire 1 W error_6 $end
+$var wire 1 X error_7 $end
+$var wire 7 Y palabra_rx [6:0] $end
+$var wire 1 Z sindrome_error $end
+$var wire 3 [ sindrome [2:0] $end
+$var wire 1 8 paridad_mal $end
+$var wire 7 \ palabra_corregida [6:0] $end
+$var wire 4 ] datos_corregidos [3:0] $end
 $upscope $end
 $scope module u_despliegue_receptor $end
-$var wire 1 \ a $end
-$var wire 1 ] b $end
-$var wire 1 ^ c $end
-$var wire 4 _ codigo_bin_led_po [3:0] $end
-$var wire 1 ` d $end
-$var wire 1 + display_pi $end
-$var wire 1 A doble_error_pi $end
-$var wire 1 a e $end
-$var wire 1 b f $end
-$var wire 1 c g $end
-$var wire 4 d palabra_pi [3:0] $end
-$var wire 3 e sindrome_pi [2:0] $end
-$var wire 4 f dato_mostrar [3:0] $end
-$var wire 7 g catodo_po [6:0] $end
-$var wire 2 h anodo_po [1:0] $end
+$var wire 1 ^ a $end
+$var wire 1 _ b $end
+$var wire 1 ` c $end
+$var wire 4 a codigo_bin_led_po [3:0] $end
+$var wire 1 b d $end
+$var wire 1 , display_pi $end
+$var wire 1 C doble_error_pi $end
+$var wire 1 c e $end
+$var wire 1 d f $end
+$var wire 1 e g $end
+$var wire 4 f palabra_pi [3:0] $end
+$var wire 3 g sindrome_pi [2:0] $end
+$var wire 4 h dato_mostrar [3:0] $end
+$var wire 7 i catodo_po [6:0] $end
+$var wire 2 j anodo_po [1:0] $end
 $upscope $end
 $scope module u_generador_error $end
-$var wire 1 i error1_bit1 $end
-$var wire 1 j error1_bit2 $end
-$var wire 1 k error1_bit3 $end
-$var wire 1 l error1_bit4 $end
-$var wire 1 m error1_bit5 $end
-$var wire 1 n error1_bit6 $end
-$var wire 1 o error1_bit7 $end
-$var wire 1 p error2_bit1 $end
-$var wire 1 q error2_bit2 $end
-$var wire 1 r error2_bit3 $end
-$var wire 1 s error2_bit4 $end
-$var wire 1 t error2_bit5 $end
-$var wire 1 u error2_bit6 $end
-$var wire 1 v error2_bit7 $end
-$var wire 3 w error_pos1_pi [2:0] $end
-$var wire 3 x error_pos2_pi [2:0] $end
-$var wire 8 y palabra_codificada_pi [7:0] $end
-$var wire 8 z palabra_error_po [7:0] $end
-$var wire 1 { e2_2 $end
-$var wire 1 | e2_1 $end
-$var wire 1 } e2_0 $end
-$var wire 1 ~ e1_2 $end
-$var wire 1 !" e1_1 $end
-$var wire 1 "" e1_0 $end
+$var wire 1 k error1_bit1 $end
+$var wire 1 l error1_bit2 $end
+$var wire 1 m error1_bit3 $end
+$var wire 1 n error1_bit4 $end
+$var wire 1 o error1_bit5 $end
+$var wire 1 p error1_bit6 $end
+$var wire 1 q error1_bit7 $end
+$var wire 1 r error2_bit1 $end
+$var wire 1 s error2_bit2 $end
+$var wire 1 t error2_bit3 $end
+$var wire 1 u error2_bit4 $end
+$var wire 1 v error2_bit5 $end
+$var wire 1 w error2_bit6 $end
+$var wire 1 x error2_bit7 $end
+$var wire 3 y error_pos1_pi [2:0] $end
+$var wire 3 z error_pos2_pi [2:0] $end
+$var wire 8 { palabra_codificada_pi [7:0] $end
+$var wire 8 | palabra_error_po [7:0] $end
+$var wire 1 } e2_2 $end
+$var wire 1 ~ e2_1 $end
+$var wire 1 !" e2_0 $end
+$var wire 1 "" e1_2 $end
+$var wire 1 #" e1_1 $end
+$var wire 1 $" e1_0 $end
 $upscope $end
 $scope module u_sindrome_hamming $end
-$var wire 7 #" palabra_pi [6:0] $end
-$var wire 3 $" sindrome_po [2:0] $end
+$var wire 7 %" palabra_pi [6:0] $end
+$var wire 3 &" sindrome_po [2:0] $end
 $upscope $end
 $scope module u_verificador_paridad $end
-$var wire 1 6 error_paridad_po $end
-$var wire 8 %" palabra_pi [7:0] $end
+$var wire 1 8 error_paridad_po $end
+$var wire 8 '" palabra_pi [7:0] $end
 $upscope $end
 $upscope $end
 $upscope $end
@@ -142,19 +144,21 @@ $dumpall
 $end
 #0
 $dumpvars
-b11010010 %"
-b0 $"
-b1010010 #"
+b11010010 '"
+b0 &"
+b1010010 %"
+0$"
+0#"
 0""
 0!"
 0~
 0}
-0|
-0{
-b11010010 z
-b11010010 y
-b0 x
-b0 w
+b11010010 |
+b11010010 {
+b0 z
+b0 y
+0x
+0w
 0v
 0u
 0t
@@ -167,276 +171,288 @@ b0 w
 0m
 0l
 0k
-0j
-0i
-b10 h
-b1000 g
+b10 j
+b1000 i
+b1010 h
+b0 g
 b1010 f
-b0 e
-b1010 d
+1e
+1d
 1c
-1b
-1a
-0`
-b1010 _
+0b
+b1010 a
+1`
+1_
 1^
-1]
-1\
-b1010 [
-b1010010 Z
-b0 Y
+b1010 ]
+b1010010 \
+b0 [
+0Z
+b1010010 Y
 0X
-b1010010 W
+0W
 0V
 0U
 0T
 0S
 0R
 0Q
-0P
+b1000 P
 0O
-b1000 N
+1N
 0M
 1L
 0K
-1J
+0J
 0I
-0H
-0G
-1F
-b1010 E
+1H
+b1010 G
+0F
+0E
 0D
 0C
-0B
-0A
-b10 @
+b10 B
+b1000 A
+b1000 @
 b1000 ?
-b1000 >
-b1000 =
-b1010 <
-b1010 ;
-b11010010 :
-b11010010 9
-b1010 8
-b1010010 7
-06
+b1010 >
+b1010 =
+b11010010 <
+b11010010 ;
+b1010 :
+b1010010 9
+08
+b0 7
+b1010 6
 b0 5
 b0 4
-b0 3
-b11010010 2
-b1010 1
-10
+b11010010 3
+b1010 2
+11
+00
 0/
-0.
+b0 .
 b0 -
-b0 ,
-0+
-b0 *
-b1010 )
-0(
-1'
-0&
-b1000 %
-0$
+0,
+b0 +
+b1010 *
+0)
+1(
+0'
+b1000 &
+0%
+1$
 1#
-1"
+b1010 "
 b11010010 !
 $end
 #20000
-b11 >
-b11 g
-0\
-0]
-1`
-1R
-1O
-1X
-b1011 f
-b1010 ;
-b1010 [
-b11 5
-b11 Y
-b11 e
-b11 $"
-b1010010 Z
-b1011 <
-b1011 _
-b1011 8
-b1011 d
-16
-b1010110 7
-b1010110 W
-b1010110 #"
-b11010110 !
-b11010110 2
-b11010110 %"
-b11010110 9
-b11010110 z
-1k
-0i
-1!"
-1""
-b11 ,
-b11 3
-b11 w
-#30000
-0`
-1c
-b1000 >
-b1000 g
-1]
+b1000 @
+b1000 i
 1^
-1\
-1"
-0R
-0X
-0A
-b0 5
-b0 Y
-b0 e
-b0 $"
-b1010 f
-0O
-b1010 ;
-b1010 [
-06
-b1010010 Z
-b1010010 7
-b1010010 W
-b1010010 #"
-b1010 <
-b1010 _
-b1010 8
-b1010 d
-b1000 %
-b1000 ?
-b11010010 !
-b11010010 2
-b11010010 %"
-1.
-b11010010 *
-1/
-#40000
-b11 %
-b11 ?
-b11 >
-b11 g
-0\
-0]
-1`
-1R
-1O
-1X
-b11 5
-b11 Y
-b11 e
-b11 $"
-b1011 f
-b1010 ;
-b1010 [
-16
-b1010010 Z
-b1010110 7
-b1010110 W
-b1010110 #"
-b1011 <
-b1011 _
-b1011 8
-b1011 d
-b11010110 !
-b11010110 2
-b11010110 %"
-b11010110 *
-#50000
-1\
-1]
-b100100 %
-b100100 ?
+1_
 0b
-b100100 >
-b100100 g
-0a
+1T
+b1010 h
+1Q
+1Z
+b1010 >
+b1010 a
+b1010 "
+b1010 6
+b1010 =
+b1010 ]
+b1010 f
+b11 7
+b11 [
+b11 g
+b11 &"
+b1010010 \
+b1011 :
+18
+b1010110 9
+b1010110 Y
+b1010110 %"
+b11010110 !
+b11010110 3
+b11010110 '"
+b11010110 ;
+b11010110 |
+1m
+0k
+1#"
+1$"
+b11 -
+b11 4
+b11 y
+#1020000
+1_
 1^
-b11 f
-0#
-1$
-b1 @
-b1 h
-1+
-#60000
-0]
-b1000010 %
-b1000010 ?
-b1000010 >
-b1000010 g
-0^
-1b
-1a
-0"
-b1110 f
-1A
+1d
+1e
+1c
+b1000 &
+b1000 A
+b1000 @
+b1000 i
+1`
+0b
+1#
+0T
+0Z
+b1010 h
+0C
+b0 7
+b0 [
+b0 g
+b0 &"
 0Q
-0O
-0R
-06
-b1001 ;
-b1001 [
-b110 5
-b110 Y
-b110 e
-b110 $"
-b1000110 Z
-b1000110 7
-b1000110 W
-b1000110 #"
-b1001 <
-b1001 _
-b1001 8
-b1001 d
+b1010 >
+b1010 a
+b1010 "
+b1010 6
+b1010 =
+b1010 ]
+b1010 f
+08
+b1010010 \
+b1010010 9
+b1010010 Y
+b1010010 %"
+b1010 :
+b11010010 !
+b11010010 3
+b11010010 '"
+1/
+b11010010 +
+10
+#1030000
+b1000 &
+b1000 A
+b1000 @
+b1000 i
+1^
+1_
+0b
+1T
+b1010 h
+1Q
+1Z
+b11 7
+b11 [
+b11 g
+b11 &"
+b1010 >
+b1010 a
+b1010 "
+b1010 6
+b1010 =
+b1010 ]
+b1010 f
+18
+b1010010 \
+b1010110 9
+b1010110 Y
+b1010110 %"
+b1011 :
+b11010110 !
+b11010110 3
+b11010110 '"
+b11010110 +
+#1040000
+1b
+b100100 &
+b100100 A
+0d
+1^
+b100100 @
+b100100 i
+0c
+1`
+b11 h
+0$
+1%
+b1 B
+b1 j
+1,
+#1050000
+0_
+b1000010 &
+b1000010 A
+b1000010 @
+b1000010 i
+0`
+1d
+1c
+0#
+b1110 h
+1C
+0S
+0Q
+0T
+08
+b1001 >
+b1001 a
+b1001 "
+b1001 6
+b1001 =
+b1001 ]
+b1001 f
+b110 7
+b110 [
+b110 g
+b110 &"
+b1000110 \
+b1000110 9
+b1000110 Y
+b1000110 %"
+b1001 :
 b11000110 !
-b11000110 2
-b11000110 %"
-b11000110 *
-#90000
-x\
-xc
-bx %
-bx ?
-x]
-xb
-x`
-bx >
-bx g
-xa
+b11000110 3
+b11000110 '"
+b11000110 +
+#1080000
 x^
-xR
-xQ
+xe
+bx &
+bx A
+x_
+xd
+xb
+bx @
+bx i
+xc
+x`
 xT
-xP
 xS
-xU
-x"
 xV
+xR
+xU
+xW
+x#
 xX
+xZ
+bx h
+bx >
+bx a
+bx "
+bx 6
+bx =
+bx ]
 bx f
-bx ;
+xC
+bx \
+bx 7
 bx [
-xA
-bx Z
-bx 5
-bx Y
-bx e
-bx $"
-xO
-x6
-bz 7
-bz W
-bz #"
-bz <
-bz _
-bz 8
-bz d
-bz !
-bz 2
+bx g
+bx &"
+xQ
+x8
+bz 9
+bz Y
 bz %"
-0.
+bz :
+bz !
+bz 3
+bz '"
+0/

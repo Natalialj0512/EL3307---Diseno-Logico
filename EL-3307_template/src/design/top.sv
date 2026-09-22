@@ -31,13 +31,16 @@ module top (
     // ========================================================
     // BITS ENTRE FPGA PARA CONECTAR ENTRE TRANSMISOR Y RECEPTOR p, i3, i2, i1, c2, i0, c1, c0
 
-    inout wire [7:0] datos_io,
+    inout wire [7:0] datos_io, 
 
 
     // ========================================================
     // DISPLAY DE 7 SEGMENTOS
     // ========================================================
+    //Señal binaria receptor - display
 
+    // TODO Solo descomentar para hacer simulación: 
+    //output wire [3:0] palabra_pi_d,
     output wire [6:0] catodo_po, // Segmentos
     output wire dig1_po, // Transistor 1 para dígito 1
     output wire dig2_po, // Transistor 2 para dígito 2
@@ -192,7 +195,7 @@ module top (
 
     despliegue_receptor u_despliegue_receptor (
         // Palabra recibida directamente de los pines
-        .palabra_pi(palabra_recibida),
+        .palabra_pi(datos_corregidos),
 
         // Síndrome calculado
         .sindrome_pi(sindrome),
@@ -213,6 +216,8 @@ module top (
         // Selección de display
         .anodo_po(anodo_rx)
     );
+
+    assign palabra_pi_d = datos_corregidos;
 
 
     // ========================================================

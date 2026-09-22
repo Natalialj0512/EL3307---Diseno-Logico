@@ -42,6 +42,7 @@ module top_tb;
     wire dot_po;
 
 
+    wire [3:0] palabra_pi_d;
     // ========================================================
     // DRIVER EXTERNO DEL BUS
     // ========================================================
@@ -71,6 +72,7 @@ module top_tb;
         .p_pi(p_pi),
 
         .datos_io(datos_io),
+        .palabra_pi_d(palabra_pi_d),
 
         .catodo_po(catodo_po),
         .dig1_po(dig1_po),
@@ -154,11 +156,15 @@ module top_tb;
         error_pos1_pi = 3'b011;
         error_pos2_pi = 3'b000;
 
-        #10;
+        #1000;
 
-        $display("Palabra original  : 11010010");
-        $display("Palabra con error : %b", datos_io);
-        $display("Esperado          : 11010110");
+        $display("Palabra original    : 11010010");
+        $display("Palabra con error   : %b", datos_io);
+        $display("Esperado con error  : 11010110");
+        $display("Bit invertido       : posicion Hamming %0d (indice %0d)",
+                 error_pos1_pi, error_pos1_pi - 1);
+        $display("Palabra corregida   : %b", palabra_pi_d);
+        $display("Esperado corregida  : 1010");
         $display("==============================================");
 
 
