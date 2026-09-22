@@ -863,8 +863,188 @@ Se comprobó la representación de palabras en hexadecimal, la visualización de
 </details>
 
 
+</details>
+
+<details>
+<summary><strong>Testbench del sistema completo (TOP)</strong></summary>
+
+#### 1. Objetivo del testbench
+
+El testbench `top_tb` permite verificar la integración de los diferentes módulos que conforman el sistema completo de transmisión y recepción.
+
+La prueba permite comprobar el funcionamiento del sistema en modo transmisor y receptor, incluyendo la generación de la palabra codificada, la inserción de errores, la comunicación mediante el bus de 8 bits, la detección de errores, la corrección de un error simple y la detección de doble error.
+
+El testbench utiliza el bus bidireccional `datos_io[7:0]` para simular la comunicación entre las dos FPGA.
+
+#### 2. Pruebas del transmisor
+
+##### Prueba 1 — Transmisor sin error
+
+Se ingresó la palabra de información:
+
+```text
+Código de entrada: 1010
+```
+
+El sistema generó en el bus:
+
+```text
+Datos en el bus: 11010010
+Esperado:        11010010
+```
+
+El dato generado por el transmisor coincidió con el valor esperado.
+
+**Resultado: Correcto.**
+
+##### Prueba 2 — Transmisor con error en posición 3
+
+Se utilizó como palabra original:
+
+```text
+11010010
+```
+
+y se seleccionó la posición Hamming 3 para la inserción del error.
+
+El resultado obtenido fue:
+
+```text
+Palabra con error: 11010110
+Esperado:          11010110
+```
+
+La palabra obtenida coincidió con el valor esperado después de la inserción del error.
+
+**Resultado: Correcto.**
+
+##### Evidencia de la simulación del transmisor
+
+La siguiente captura de GTKWave muestra las señales utilizadas durante las pruebas del transmisor, incluyendo el modo de operación, la palabra de entrada, las posiciones de error y el bus de datos.
+
+<img src="doc/images/tb_top.jpeg" width="800">
+
+*Figura. Simulación RTL del TOP durante las pruebas del transmisor.*
+
+#### 3. Pruebas del receptor
+
+##### Prueba 3 — Receptor sin error
+
+Se ingresó al receptor la palabra:
+
+```text
+Datos recibidos: 11010010
+```
+
+El sistema obtuvo:
+
+```text
+Palabra recibida: 1010
+Paridad mal:      0
+Síndrome:         000
+DED:              0
+```
+
+Los valores esperados fueron:
+
+```text
+Palabra esperada:  1010
+Síndrome esperado: 000
+DED esperado:      0
+```
+
+Los resultados obtenidos coincidieron con los valores esperados.
+
+**Resultado: Correcto.**
+
+##### Prueba 4 — Receptor con un error
+
+Se recibió la palabra:
+
+```text
+11010110
+```
+
+correspondiente a la palabra transmitida con un error en la posición Hamming 3.
+
+El receptor obtuvo:
+
+```text
+Palabra recibida: 1011
+Paridad mal:      1
+Síndrome:         011
+Datos corregidos: 1010
+DED:              0
+```
+
+El síndrome `011` identificó correctamente la posición Hamming 3. Posteriormente, el sistema corrigió el error y recuperó la palabra original:
+
+```text
+1010
+```
+
+Durante esta prueba también se modificó la selección del display para mostrar el síndrome.
+
+**Resultado: Correcto.**
+
+##### Prueba 5 — Receptor con dos errores
+
+Se ingresó al receptor la palabra:
+
+```text
+11000110
+```
+
+El sistema obtuvo:
+
+```text
+Paridad mal: 0
+Síndrome:    110
+DED:         1
+DOT:         0
+```
+
+Los valores esperados fueron:
+
+```text
+Síndrome esperado: 110
+DED esperado:      1
+```
+
+El síndrome obtenido coincidió con el valor esperado y la salida `DED` indicó correctamente la condición de doble error.
+
+**Resultado: Correcto.**
+
+##### Evidencia de la simulación del receptor
+
+La siguiente captura de GTKWave muestra las señales del TOP durante las pruebas correspondientes al receptor, incluyendo el cambio de modo, el bus de comunicación, las posiciones de error y las señales de salida del sistema.
+
+<img src="doc/images/tb_top2.jpeg" width="800">
+
+*Figura. Simulación RTL del TOP durante las pruebas del receptor.*
+
+#### 4. Resumen de resultados
+
+| Prueba | Modo | Condición | Resultado |
+|:---:|:---|:---|:---:|
+| 1 | Transmisor | Sin error | Correcto |
+| 2 | Transmisor | Error en posición 3 | Correcto |
+| 3 | Receptor | Sin error | Correcto |
+| 4 | Receptor | Un error en posición 3 | Correcto |
+| 5 | Receptor | Dos errores | Correcto |
+
+#### 5. Resultado del testbench
+
+Las pruebas realizadas permitieron verificar la integración de los módulos del transmisor y del receptor dentro del `top`.
+
+Se comprobó la generación de la palabra transmitida, la inserción de un error en una posición determinada, la recepción de una palabra sin errores, la identificación y corrección de un error simple mediante el síndrome Hamming y la detección de una condición de doble error mediante la combinación de la paridad global y el síndrome.
+
+En las cinco pruebas realizadas, los resultados obtenidos coincidieron con los valores esperados.
 
 </details>
+
+
+
 
 
 <details>
